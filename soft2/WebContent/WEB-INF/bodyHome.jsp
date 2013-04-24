@@ -2,7 +2,7 @@
 
 <div id = "barraNavegador" class="navbar">
 			<div class="navbar-inner">
-				<a class="brand" id ="redex" href="#">Redex</a>
+				<a class="brand" id ="redex" href="#">No Redex</a>
 				<ul class="nav">
 					<li id = "WebEmp"><a href="#">Inicio</a></li>
 					<li id = "Extranet"><a href="#">Extranet</a></li>
