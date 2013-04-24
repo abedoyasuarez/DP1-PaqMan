@@ -231,7 +231,7 @@
                             <button id="rastreaEnvio" class="btn btn-success" style ="margin-bottom: 10px;" >Rastrea un Envío!</button>
                         <div id ="mensajeRastreo" class="text-error">  </div>  
                         </fieldset>  	
-                                            <h1>Bienvenido a Redex! <small>Líder en el mercado</small></h1>
+                                            <h1>Redex! <small>Líder en el mercado</small></h1>
                                             <img src="resources/png/can.png" class="navidad" />
 					
                                         </div>
