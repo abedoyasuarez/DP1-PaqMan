@@ -20,11 +20,11 @@
 		
                 <!-- jquery scroll -->
                
-		<title>Paque-Tesis</title>
+		<title>::: PaqMan :::</title>
 		<!--
 		<script src = "/soft/resources/js/Extranet/editarNombre.js"></script>
 		-->
-		<script src="/soft/resources/js/Home/snow.js"></script>
+		<!--  <script src="/soft/resources/js/Home/snow.js"></script>-->
 		<script src = "/soft/resources/js/Home/fokus.min.js"></script>
 		<script type="text/javascript" src="/soft/resources/js/jquery/jquery.scrollTo-1.4.3.1.js"></script>
 		<script type = "text/javascript">

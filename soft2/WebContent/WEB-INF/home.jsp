@@ -86,6 +86,7 @@
                     }
 
                   </style>
+		
 		<%@ include file="headHome.jsp" %>
 		
 		
@@ -228,11 +229,11 @@
 			<fieldset style ="float: right">
                             
                             <input id ="codigoRastreo" type="text"  placeholder="Codigo de Rastreo">
-                            <button id="rastreaEnvio" class="btn btn-success" style ="margin-bottom: 10px;" >Rastrea un Envío!</button>
+                            <button id="rastreaEnvio" class="btn btn-success" style ="margin-bottom: 10px;" >Rastrea tu Pedido!</button>
                         <div id ="mensajeRastreo" class="text-error">  </div>  
                         </fieldset>  	
-                                            <h1>Redex! <small>Líder en el mercado</small></h1>
-                                            <img src="resources/png/can.png" class="navidad" />
+                                            <h1>PaqHoy! <small>Siempre Contigo</small></h1>
+                                            <!--<img src="resources/png/can.png" class="navidad" />-->
 					
                                         </div>
 				
@@ -248,22 +249,22 @@
 							<div class="item">
 								<img src="/soft/resources/jpeg/bootstrap-mdo-sfmoma-01.jpg" alt="">
 								<div class="carousel-caption">
-									<h4>Cuidado y seguimiento especial</h4>
-									<p>Cuidamos cada uno de sus envÌos como si fuera nuestro. Cuidado especial para aquellos paquetes frágiles, como su corazón.</p>
+									<h4>Disponibilidad Inmediata</h4>
+									<p>Puede realizar su pedido las 24 horas del día. No dormimos...</p>
 								</div>
 							</div>
 							<div class="item active">
 								<img src="/soft/resources/jpeg/bootstrap-mdo-sfmoma-02.jpg" alt="">
 								<div class="carousel-caption">
 									<h4>Rapidez garantizada</h4>
-									<p>Nosotros no la hacemos larga, como...</p>
+									<p>El pedido estará en la puerta de su casa como un Rayo!!!</p>
 								</div>
 							</div>
 							<div class="item">
 								<img src="/soft/resources/jpeg/bootstrap-mdo-sfmoma-03.jpg" alt="">
 								<div class="carousel-caption">
 									<h4>Seguridad</h4>
-									<p>Usted está dejando su paquete en buenas manos. If you know what i mean.</p>
+									<p>El pedido llegará en un estado Impecable. Lo aseguramos...</p>
 								</div>
 							</div>
 						</div>
@@ -275,7 +276,7 @@
 		</div>
 		
 		
-		<div class = "form-actions">
+		<!--<div class = "form-actions">
 		
 		<div class = "container-fluid">
 		<div class = "row-fluid">
@@ -326,7 +327,7 @@
                         
 		</div>
 		</div>
-		</div>
+		</div>-->
 		
             
                 
@@ -338,6 +339,6 @@
 	</div>
         
         <div id="footer" align="center">
-            <span> <a href ="http://squirteam.com">Copyright 2012 - PAQUE-TESIS </a></span>
+            <span> <a href ="http://squirteam.com">Copyright 2013 - PAQMAN </a></span>
 	</div>
 </html>
