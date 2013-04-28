@@ -139,7 +139,7 @@
 	});
                         
                         $("#rastreaEnvio").click(function(){
-                            var data = {code : $("#codigoRastreo").val()};
+                            /*var data = {code : $("#codigoRastreo").val()};
                             var jsonData = JSON.stringify(data); 
                             $.ajax({
                             type: "POST",
@@ -149,17 +149,18 @@
                             url: "Pedido/VerificaRastreo",
                             //beforeSend: waitTable,        
                             success: function(data){
-                            if (data.me =="") {
-                                localStorage.setItem("idEnvio",data.id);
+                            //if (data.me =="") {*/
+                                //localStorage.setItem("idEnvio",data.id)
+                            	localStorage.setItem("idEnvio","123");
                                 $(location).attr("href", "extranet/maparastreo");
-                            }else {
-                                 $("#mensajeRastreo").html(data.me);
-                            }
-                        }
-                        });
+                           /* //}else {
+                            //     $("#mensajeRastreo").html(data.me);
+                            //}
+                        //}
+                        //});
                             
                          
-                           return false;
+                          // return false;*/
                         });
                         
                          $("#Extranet").click(function(){
