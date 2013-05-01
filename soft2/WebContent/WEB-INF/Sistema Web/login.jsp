@@ -40,7 +40,7 @@
       						<input type="text" id="inputUser" placeholder="Email o Documento">
     					</div>
   					</div>
-  					
+  						
   					<div class="control-group">
   						<label class="control-label">Contraseña</label>	
     					<div class="controls">

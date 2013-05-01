@@ -158,7 +158,7 @@ public class SimulacionController {
     	 
     	 rpta.me = "";
     	 
-    	 int numUT = Integer.parseInt(s.ff);
+    	 int numUT = Integer.parseInt(s.ff);		
     	 List<AlmacenesSimula> almacenesSim = s.listaAlmacenes; 
     	     	 
     	 System.out.println("Panchito");
@@ -261,7 +261,7 @@ public class SimulacionController {
 			        	 }
 			        	 else{ 
 			        		 if(insertAl.cantidadLleno > 999){
-			        			 insertAl.cantidadLleno = 1000;
+			        			 insertAl.cantidadLleno = 1000; //PEdidos
 			        			 
 			        			 if(caido != 1){
 			        				 AlmacenCaida almCaida = new AlmacenCaida();
@@ -282,7 +282,7 @@ public class SimulacionController {
 		         }
 	         }
 	         //Fin de los almacenes
-	         //Inicio vuelos
+/*	         //Inicio vuelos
 	         System.out.println("WEKA working for Vuelos :)");
 	         
 	         System.out.println("Antes del servicio de Vuelos :(");
@@ -393,8 +393,8 @@ public class SimulacionController {
 		         
 		         
 	         }
-
-	                  
+	         //Fin vuelos
+	*/                  
 	         
     	 }
 	     catch(Exception e){
