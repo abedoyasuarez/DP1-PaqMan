@@ -9,6 +9,7 @@ public class Simulacion {
 	public static double margenSeguridad;
 	public static Nodo almacen;
 	public static List<Pedido> listaPedidosRecibidos;
+	
 	public int inicializarSimulacion(int tiempoAct, int intervaloTiempo, double margenSeguridad,Nodo almacen){
 		this.tiempoActual=tiempoAct;
 		this.costo=0;
@@ -18,4 +19,6 @@ public class Simulacion {
 		this.listaPedidosRecibidos=null;
 		return 1;
 	}
+	
+	
 }
