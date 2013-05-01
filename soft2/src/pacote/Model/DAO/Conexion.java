@@ -21,14 +21,12 @@ public class Conexion{
 	
 	public Connection abrirConexion() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException {
 		conn = null;
-      String username="admin";
-      String password="admin";
-     //String database="inf2260882g2";
+      String username="root";
+      String password="";
       String database="mydb";
+      
      Class.forName("com.mysql.jdbc.Driver").newInstance();
-//     conn = DriverManager.getConnection("jdbc:mysql://quilla.lab.inf.pucp.edu.pe/"+database, username, password);
-     conn = DriverManager.getConnection("jdbc:mysql://localhost/"+database, username, password);
-//     conn = DriverManager.getConnection("jdbc:mysql://quilla.lab.inf.pucp.edu.pe:3306/inf282g10","inf282g10", "paralelo");
+     conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/"+database, username, password);
      conn.setAutoCommit(false);
      return conn;
 	}
