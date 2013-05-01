@@ -23,7 +23,6 @@ public class Conexion{
 		conn = null;
       String username="admin";
       String password="admin";
-     //String database="inf2260882g2";
       String database="mydb";
      Class.forName("com.mysql.jdbc.Driver").newInstance();
 //     conn = DriverManager.getConnection("jdbc:mysql://quilla.lab.inf.pucp.edu.pe/"+database, username, password);
