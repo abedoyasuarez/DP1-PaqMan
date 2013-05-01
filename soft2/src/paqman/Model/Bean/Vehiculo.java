@@ -5,17 +5,19 @@ public class Vehiculo {
 	private int id;
 	private int tipo; //AUTO 0 MOTO 1
 	private int capacidad;
-	private int cantidadPaquetes=0;
-	private List<Paquete> listaPaquetes;
+	private int cantidadPaquetes;
+	//private List<Paquete> listaPaquetes; ya esta en ruta
 	private int velocidad;
 	private int tiempoTrabajo;
 	private int estado; // 0 EN ALMACEN - 1 EN CAMINO - 2 DESCANZO 
-	private int turno; //TURNO 0 - 1- 2		
-	private Nodo posicion;
-	private int distanciaRecorrida;
-	private int posicionRelativa;	
+	private int turno; //TURNO 0 - 1 - 2		
+	private Nodo posicionRuta; //
+	private double distanciaRecorrida; //distancia recorrida de la ruta
+	private int posicionRelativa; //indice de un nodo de la ruta	
 	private int	tiempoDescanso;
-	private List<Ruta> listaRutas;
+	private Ruta rutaActual;
+	private double costoPorKm;
+	//private List<Ruta> listaRutas; no se necesita historico
 	
 	public int getId() {
 		return id;
@@ -40,9 +42,6 @@ public class Vehiculo {
 		this.velocidad = velocidad;
 	}
 
-	public List<Paquete> getListaPaquetes() {
-		return listaPaquetes;
-	}
 
 	public int getTiempoTrabajo() {
 		return tiempoTrabajo;
@@ -52,17 +51,6 @@ public class Vehiculo {
 		this.tiempoTrabajo = tiempoTrabajo;
 	}
 
-	public Nodo getPosicion() {
-		return posicion;
-	}
-
-	public void setPosicion(Nodo posicion) {
-		this.posicion = posicion;
-	}
-
-	public int getDistanciaRecorrida() {
-		return distanciaRecorrida;
-	}
 
 	public void setDistanciaRecorrida(int distanciaRecorrida) {
 		this.distanciaRecorrida = distanciaRecorrida;

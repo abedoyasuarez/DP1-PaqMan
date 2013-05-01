@@ -5,22 +5,23 @@ import java.util.ArrayList;
 
 public class Pedido {
 	private int id;
-	private Nodo nodo;
+	private Nodo nodoDestino;
 	private int cantidadPaquetes;
 	private Date horaLlegada;
 	private int tiempoEntrega;//1-2-4-8-24
-	private List<Paquete> listaPaquetes;
-
+	//private List<Paquete> listaPaquetes; no importa que paquete cargo solo la cantidad
+	private String cliente;
+	
 	public int getId() {
 		return id;
 	}
 	
-	public Nodo getNodo() {
-		return nodo;
+	public Nodo getNodoDestino() {
+		return nodoDestino;
 	}
 
-	public void setNodo(Nodo nodo) {
-		this.nodo = nodo;
+	public void setNodoDestino(Nodo nodo) {
+		this.nodoDestino = nodo;
 	}
 
 	public int getCantidadPaquetes() {
@@ -41,11 +42,13 @@ public class Pedido {
 	public void setTiempoEntrega(int tiempoEntrega) {
 		this.tiempoEntrega = tiempoEntrega;
 	}
-	public List<Paquete> getListaPaquetes() {
-		return listaPaquetes;
+
+	public String getCliente() {
+		return cliente;
 	}
-	public void setListaPaquetes(List<Paquete> listaPaquetes) {
-		this.listaPaquetes = listaPaquetes;
+
+	public void setCliente(String cliente) {
+		this.cliente = cliente;
 	}
 	
 	
