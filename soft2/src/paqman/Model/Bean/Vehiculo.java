@@ -18,11 +18,12 @@ public class Vehiculo {
 	private Ruta rutaActual;
 	private double costoPorKm;
 	//private List<Ruta> listaRutas; no se necesita historico
-	
 	public int getId() {
 		return id;
 	}
-
+	public void setId(int id) {
+		this.id = id;
+	}
 	public int getTipo() {
 		return tipo;
 	}
@@ -35,58 +36,71 @@ public class Vehiculo {
 	public void setCapacidad(int capacidad) {
 		this.capacidad = capacidad;
 	}
-	public float getVelocidad() {
+	public int getCantidadPaquetes() {
+		return cantidadPaquetes;
+	}
+	public void setCantidadPaquetes(int cantidadPaquetes) {
+		this.cantidadPaquetes = cantidadPaquetes;
+	}
+	public int getVelocidad() {
 		return velocidad;
 	}
-	public void setVelocidad(int velocidad) {	
+	public void setVelocidad(int velocidad) {
 		this.velocidad = velocidad;
 	}
-
-
 	public int getTiempoTrabajo() {
 		return tiempoTrabajo;
 	}
-
 	public void setTiempoTrabajo(int tiempoTrabajo) {
 		this.tiempoTrabajo = tiempoTrabajo;
 	}
-
-
-	public void setDistanciaRecorrida(int distanciaRecorrida) {
-		this.distanciaRecorrida = distanciaRecorrida;
-	}
-
-	public int getPosicionRelativa() {
-		return posicionRelativa;
-	}
-
-	public void setPosicionRelativa(int posicionRelativa) {
-		this.posicionRelativa = posicionRelativa;
-	}
-
-	public int getTiempoDescanso() {
-		return tiempoDescanso;
-	}
-
-	public void setTiempoDescanso(int tiempoDescanso) {
-		this.tiempoDescanso = tiempoDescanso;
-	}
-
-	public int getTurno() {
-		return turno;
-	}
-
-	public void setTurno(int turno) {
-		this.turno = turno;
-	}
-
 	public int getEstado() {
 		return estado;
 	}
-
 	public void setEstado(int estado) {
 		this.estado = estado;
 	}
-
+	public int getTurno() {
+		return turno;
+	}
+	public void setTurno(int turno) {
+		this.turno = turno;
+	}
+	public Nodo getPosicionRuta() {
+		return posicionRuta;
+	}
+	public void setPosicionRuta(Nodo posicionRuta) {
+		this.posicionRuta = posicionRuta;
+	}
+	public double getDistanciaRecorrida() {
+		return distanciaRecorrida;
+	}
+	public void setDistanciaRecorrida(double distanciaRecorrida) {
+		this.distanciaRecorrida = distanciaRecorrida;
+	}
+	public int getPosicionRelativa() {
+		return posicionRelativa;
+	}
+	public void setPosicionRelativa(int posicionRelativa) {
+		this.posicionRelativa = posicionRelativa;
+	}
+	public int getTiempoDescanso() {
+		return tiempoDescanso;
+	}
+	public void setTiempoDescanso(int tiempoDescanso) {
+		this.tiempoDescanso = tiempoDescanso;
+	}
+	public Ruta getRutaActual() {
+		return rutaActual;
+	}
+	public void setRutaActual(Ruta rutaActual) {
+		this.rutaActual = rutaActual;
+	}
+	public double getCostoPorKm() {
+		return costoPorKm;
+	}
+	public void setCostoPorKm(double costoPorKm) {
+		this.costoPorKm = costoPorKm;
+	}
 	
 } 
