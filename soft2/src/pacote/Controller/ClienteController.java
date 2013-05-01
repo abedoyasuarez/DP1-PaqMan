@@ -112,7 +112,7 @@ public class ClienteController {
 	@RequestMapping(value = "/Usuario/login", method = RequestMethod.POST)
     public @ResponseBody LoginResponse login(@RequestBody Usuario usuario) {
 		System.out.println("Login Usuario");
-		LoginResponse login=new LoginResponse();  //=  clienteFacade.LoginUsuario(usuario);
+		LoginResponse login= clienteFacade.LoginUsuario(usuario);
 		System.out.println(login.nombre + " " + login.me);
 		return login;
 	}

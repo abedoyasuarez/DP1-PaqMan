@@ -53,9 +53,9 @@ public class DAO_Usuario extends ConnectBD{
 	public LoginResponse loginUsuario(Usuario usuario) throws SQLException{
 		LoginResponse login = new LoginResponse();
 
-		String sql = 	" SELECT U.usuario_id, U.usuario_nombre " +
+		String sql = 	" SELECT U.id, U.nombre " +
 						" FROM Usuario U " + 
-						" WHERE U.usuario_user = ? AND U.usuario_password = ? AND usuario_estado=1";
+						" WHERE U.user = ? AND U.pass = ? AND estado=1";
 		PreparedStatement pst = conexion.conn.prepareStatement(sql);
 	    pst.setString(1, usuario.user);
 	    pst.setString(2, usuario.password);	    
