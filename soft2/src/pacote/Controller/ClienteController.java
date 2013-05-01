@@ -15,7 +15,7 @@ import pacote.Model.Bean.Usuario;
 import pacote.Model.Bean.Response.ListUsuario;
 import pacote.Model.Bean.Response.LoginResponse;
 import pacote.Model.Facade.ClienteFacade;
-
+//ASD
 @Controller
 public class ClienteController {
 	private static ClienteFacade clienteFacade = new ClienteFacade();
