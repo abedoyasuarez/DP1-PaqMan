@@ -7,25 +7,4 @@ public class Paquete {
 	private Pedido pedido;
 	private int cantidad; //Cantidad de paquetes a dejar en un punto de entrega
 
-	public int getEstado() {
-		return estado;
-	}
-	public void setEstado(int estado) {
-		this.estado = estado;
-	}
-	public Date getHoraEntrega() {
-		return horaEntrega;
-	}
-	public void setHoraEntrega(Date horaEntrega) {
-		this.horaEntrega = horaEntrega;
-	}
-
-	public Pedido getPedido() {
-		return pedido;
-	}
-
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
-	
 }
