@@ -14,7 +14,7 @@ public class Mapa {
 		this.columnas=columnas;
 		this.numNodos=filas*columnas;
 		int i;
-		for (i=0;i<this.numNodos;i++){
+		/*for (i=0;i<this.numNodos;i++){
 			int y=(i%this.columnas);
 			int x=(i/this.columnas);
 			int up=(i+this.columnas>=this.columnas*this.filas)?-1:i+this.columnas;
@@ -23,7 +23,7 @@ public class Mapa {
 			int right=((i+1)%this.columnas==0)?-1:i+1;
 			Nodo nodoInsertar=new Nodo(x,y,i,up,down,left,right);
 			mapa.add(nodoInsertar);
-		}
+		}*/
 		return 1;
 	}
 }
