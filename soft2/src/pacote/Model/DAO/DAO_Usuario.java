@@ -54,8 +54,8 @@ public class DAO_Usuario extends ConnectBD{
 		LoginResponse login = new LoginResponse();
 
 		String sql = 	" SELECT U.id, U.nombre " +
-						" FROM Usuario U " + 
-						" WHERE U.user = ? AND U.pass = ? AND estado=1";
+						" FROM usuario U " + 
+						" WHERE U.user = ? AND U.pass = ?";
 		PreparedStatement pst = conexion.conn.prepareStatement(sql);
 	    pst.setString(1, usuario.user);
 	    pst.setString(2, usuario.password);	    
