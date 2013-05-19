@@ -10,15 +10,15 @@ public class Nodo {
 	public int left;
 	public int right;
 	
-	public Nodo(int coorX, int coorY, int coorAbs, int up, int down, int left,
-			int right) {
+	public Nodo(int coorX, int coorY/*, int coorAbs, int up, int down, int left,
+			int right*/) {
 		this.coorX = coorX;
 		this.coorY = coorY;
-		this.coorAbs = coorAbs;
-		this.up = up;
-		this.down = down;
-		this.left = left;
-		this.right = right;
+		this.coorAbs = coorY*Mapa.columnas+coorX;
+		this.up=(coorAbs+Mapa.columnas>=Mapa.columnas*Mapa.filas)?-1:coorAbs+Mapa.columnas;
+		this.down=(coorAbs-Mapa.columnas<0)?-1:coorAbs-Mapa.columnas;;
+		this.left=((coorAbs-1)%Mapa.columnas==0)?-1:coorAbs-1;
+		this.right=((coorAbs+1)%Mapa.columnas==0)?-1:coorAbs+1;
 	}
 
 	public int getCoorX() {
