@@ -25,6 +25,7 @@ public class Conexion{
       String password="aeronave";
       String database="inf2260981g5";
       
+      
      Class.forName("com.mysql.jdbc.Driver").newInstance();
      conn = DriverManager.getConnection("jdbc:mysql://quilla.lab.inf.pucp.edu.pe/"+database, username, password);
      conn.setAutoCommit(false);
