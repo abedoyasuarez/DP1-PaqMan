@@ -8,7 +8,7 @@ public class Ruta {
 	private List<Nodo> trayectoria;
 	private Date salidaAlmacen;
 	private Date llegadaAlmacen;
-	//private double costo;
+	private double costo;
 	private int estado; //0 Normal 1 Incidencia
 	private Vehiculo vehiculo;
 	private List<Paquete> listaPaquetes;
@@ -43,12 +43,12 @@ public class Ruta {
 	public void setLlegadaAlmacen(Date llegadaAlmacen) {
 		this.llegadaAlmacen = llegadaAlmacen;
 	}
-//	public double getCosto() {
-//		return costo;
-//	}
-//	public void setCosto(double costo) {
-//		this.costo = costo;
-//	}
+	public double getCosto() {
+		return costo;
+	}
+	public void setCosto(double costo) {
+		this.costo = costo;
+	}
 	public int getEstado() {
 		return estado;
 	}

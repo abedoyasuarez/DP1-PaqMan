@@ -6,13 +6,6 @@ public class Paquete {
 	private Date horaEntrega;
 	private Pedido pedido;
 	private int cantidad; //Cantidad de paquetes a dejar en un punto de entrega
-	private int puntoEntrega;//Indice en la trayectoria
-	public int getPuntoEntrega() {
-		return puntoEntrega;
-	}
-	public void setPuntoEntrega(int puntoEntrega) {
-		this.puntoEntrega = puntoEntrega;
-	}
 	public int getEstado() {
 		return estado;
 	}

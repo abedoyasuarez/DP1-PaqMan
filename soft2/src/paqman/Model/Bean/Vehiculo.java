@@ -8,18 +8,10 @@ public class Vehiculo {
 	private int cantidadPaquetes;
 	//private List<Paquete> listaPaquetes; ya esta en ruta
 	private int velocidad;
-	private double costoHE;//costo por hora recorrida
-	public double getCostoHE() {
-		return costoHE;
-	}
-	public void setCostoHE(double costoHE) {
-		this.costoHE = costoHE;
-	}
 	private int tiempoTrabajo;
 	private int estado; // 0 EN ALMACEN - 1 EN CAMINO - 2 DESCANZO 
 	private int turno; //TURNO 0 - 1 - 2		
-	private int posicionRuta; //
-	private double saltoDistancia;
+	private Nodo posicionRuta; //
 	private double distanciaRecorrida; //distancia recorrida de la ruta
 	private int posicionRelativa; //indice de un nodo de la ruta	
 	private int	tiempoDescanso;
@@ -74,10 +66,10 @@ public class Vehiculo {
 	public void setTurno(int turno) {
 		this.turno = turno;
 	}
-	public int getPosicionRuta() {
+	public Nodo getPosicionRuta() {
 		return posicionRuta;
 	}
-	public void setPosicionRuta(int posicionRuta) {
+	public void setPosicionRuta(Nodo posicionRuta) {
 		this.posicionRuta = posicionRuta;
 	}
 	public double getDistanciaRecorrida() {
@@ -110,12 +102,5 @@ public class Vehiculo {
 	public void setCostoPorKm(double costoPorKm) {
 		this.costoPorKm = costoPorKm;
 	}
-	public double getSaltoDistancia() {
-		return saltoDistancia;
-	}
-	public void setSaltoDistancia(double saltoDistancia) {
-		this.saltoDistancia = saltoDistancia;
-	}
-
 	
 } 
