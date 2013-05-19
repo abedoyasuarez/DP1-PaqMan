@@ -14,16 +14,16 @@ public class Mapa {
 		this.columnas=columnas;
 		this.numNodos=filas*columnas;
 		int i;
-		/*for (i=0;i<this.numNodos;i++){
+		for (i=0;i<this.numNodos;i++){
 			int y=(i%this.columnas);
 			int x=(i/this.columnas);
 			int up=(i+this.columnas>=this.columnas*this.filas)?-1:i+this.columnas;
 			int down=(i-this.columnas<0)?-1:i-this.columnas;;
 			int left=((i-1)%this.columnas==0)?-1:i-1;
 			int right=((i+1)%this.columnas==0)?-1:i+1;
-			Nodo nodoInsertar=new Nodo(x,y,i,up,down,left,right);
+			Nodo nodoInsertar=new Nodo(x,y);
 			mapa.add(nodoInsertar);
-		}*/
+		}
 		return 1;
 	}
 }
