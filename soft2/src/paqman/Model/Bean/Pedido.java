@@ -12,6 +12,17 @@ public class Pedido {
 	//private List<Paquete> listaPaquetes; no importa que paquete cargo solo la cantidad
 	private String cliente;
 	
+	
+	public Pedido(int coordX,int coordY, int cantidadPaquetes, Date horaLlegada,
+			int tiempoEntrega, String cliente) {
+		super();
+		this.nodoDestino = new Nodo(coordX,coordY);
+		this.cantidadPaquetes = cantidadPaquetes;
+		this.horaLlegada = horaLlegada;
+		this.tiempoEntrega = tiempoEntrega;
+		this.cliente = cliente;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -53,3 +64,4 @@ public class Pedido {
 	
 	
 }
+	
