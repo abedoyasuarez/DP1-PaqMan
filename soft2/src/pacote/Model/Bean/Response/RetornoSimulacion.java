@@ -9,8 +9,8 @@ import pacote.Model.Bean.VueloCaida;
 
 public class RetornoSimulacion extends Mensaje{	
 	public ArrayList<DatoSimulacion> listaSim = new ArrayList<DatoSimulacion>();
-	public ArrayList<DatoSimulacion> listaSimVuelo = new ArrayList<DatoSimulacion>();
-	public List<AlmacenCaida> listaCaidos = new ArrayList<AlmacenCaida>();
-	public List<VueloCaida> listaCaidosVuelos = new ArrayList<VueloCaida>();
+	//public ArrayList<DatoSimulacion> listaSimVuelo = new ArrayList<DatoSimulacion>();
+	//public List<AlmacenCaida> listaCaidos = new ArrayList<AlmacenCaida>();
+	//public List<VueloCaida> listaCaidosVuelos = new ArrayList<VueloCaida>();
 }
 

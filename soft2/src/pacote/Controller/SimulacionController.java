@@ -21,6 +21,7 @@ import pacote.Model.Bean.Simul;
 import pacote.Model.Bean.SimulaAlmacen;
 import pacote.Model.Bean.SimulaDataAlmacen;
 import pacote.Model.Bean.SimulaDataVuelo;
+import pacote.Model.Bean.SimulaDia;
 import pacote.Model.Bean.SimulaVuelo;
 import pacote.Model.Bean.VueloCaida;
 import pacote.Model.Bean.Vuelo_Padre;
@@ -83,7 +84,7 @@ public class SimulacionController {
 		Conexion conexion = new Conexion();
 				
 		RetornoSimulacion ret = new RetornoSimulacion();
-		try{
+		/*try{
 			conexion.abrirConexion();
 			dao_almacen.setConexion(conexion);
 			dao_vuelo.setConexion(conexion);
@@ -135,7 +136,7 @@ public class SimulacionController {
 			}
 		}catch(Exception e){
 			e.printStackTrace();
-		}
+		}*/
 		ret.me="MENSAJE ERROR";
 		return ret;
     }
@@ -161,10 +162,10 @@ public class SimulacionController {
     	 int numUT = Integer.parseInt(s.ff);		
     	 List<AlmacenesSimula> almacenesSim = s.listaAlmacenes; 
     	     	 
-    	 System.out.println("Panchito");
+    	 System.out.println("Inicia Simulacion");
     	 try{
     	 
-	    	 System.out.println("WEKA working :) - Almacenes");
+	    	 System.out.println("WEKA working :) ");
 	    	 
 	    	 //Inicializo todos los dias que simulo
 	         for(Integer i = 0; i < numUT; i++){
@@ -172,64 +173,82 @@ public class SimulacionController {
 	        	dato.fechaCad = i.toString();
 	        	rpta.listaSim.add(dato);
 	        	
-	        	DatoSimulacion dato1 = new DatoSimulacion();
-	        	dato.fechaCad = i.toString();
-	        	rpta.listaSimVuelo.add(dato1);
+	        	//DatoSimulacion dato1 = new DatoSimulacion();
+	        	//dato.fechaCad = i.toString();
+	        	//rpta.listaSimVuelo.add(dato1);
 	         }
 	         //Pido datos
 	         
-	         System.out.println("Antes del servicio de Almacenes");
+	         System.out.println("Antes del servicio de Dia");
 	         
 	         SimulaService simulaService = new SimulaService();
-	         List<SimulaAlmacen> listaAlmacenes = simulaService.buscaDataSimulacionAlmacen();
+	         List<SimulaDia> listaDia = simulaService.buscaDataSimulacionDia();
 	         
-	         System.out.println("Paso el servicio de Almacenes");
+	         System.out.println("Paso el servicio de Dia");
 	         	         	         
-	         System.out.println("Size Almacenes: " + listaAlmacenes.size());
+	         System.out.println("Size Dias: " + listaDia.size());
 	         
-	         for(int i = 0; i < listaAlmacenes.size();i++){
+	         WekaForecaster forecaster = new WekaForecaster();
+	    	 
+	    	 Attribute atcantPaquetesT1 = new Attribute("cantPaquetesT1");
+	    	 Attribute atcantPaquetesT2 = new Attribute("cantPaquetesT2");
+	    	 Attribute atcantPaquetesT3 = new Attribute("cantPaquetesT3");
+	    	 Attribute atFecha = new Attribute("Fecha", "dd-MM-yyyy");
+	         
+	         FastVector atributos = new FastVector();
+	         
+	         atributos.addElement(atcantPaquetesT1);
+	         atributos.addElement(atcantPaquetesT2);
+	         atributos.addElement(atcantPaquetesT3);
+	         atributos.addElement(atFecha);
+	         
+	         Instances dataset = new Instances("dataset_simulacion", atributos, 0);	
+	         
+	         for(int i = 0; i < listaDia.size();i++){
 	        	 
-	        	 List<SimulaDataAlmacen> listaSimulaData = listaAlmacenes.get(i).listaSimulaDataAlmacen;		
+	        	 //List<SimulaDataAlmacen> listaSimulaData = listaAlmacenes.get(i).listaSimulaDataAlmacen;		
 	        	 
-	        	 System.out.println("****Impresion Lista*****");
+	        	 System.out.println("****Impresion Dias*****");
 	        	 	        	 
-	        	 System.out.println("Almacen: " + listaAlmacenes.get(i).almacen_id);
-	        	 System.out.println("Tama�o: " + listaSimulaData.size());
+	        	 System.out.println("Dia: " + listaDia.get(i).fecha);
+	        	 System.out.println("p t1: " + listaDia.get(i).paquetes_T1);
+	        	 System.out.println("p t2: " + listaDia.get(i).paquetes_T2);
+	        	 System.out.println("p t3: " + listaDia.get(i).paquetes_T3);
 	        	 	        	 
-	        	 int caido = 0;
-	        	 
-	        	 WekaForecaster forecaster = new WekaForecaster();
-		    	 
-		    	 Attribute atcantEnvios = new Attribute("cantEnvios");
-		    	 Attribute atFecha = new Attribute("Fecha", "dd-MM-yyyy");
+	        	 int caido = 0;        	 
 		         
-		         FastVector atributos = new FastVector();
-		         
-		         atributos.addElement(atcantEnvios);
-		         atributos.addElement(atFecha);
-		         
-		         Instances dataset = new Instances("dataset_simulacion", atributos, 0);	        	 
-	        	 
-		         if(listaSimulaData.size() > 1){
-                                 int dataSize = listaSimulaData.size();
-			         for(int j = 0; j< dataSize; j++){
-			        	 
+			         
+			        	 // enviar los datos a weka
 			        	 double[] attValues = new double[dataset.numAttributes()];
 			        	 String fecha;
 			        	 java.text.SimpleDateFormat sdf=new java.text.SimpleDateFormat("dd-MM-yyyy");
-			        	 Integer n;
+			        	 Integer t1,t2,t3;
 			        	 
-			        	 n = listaSimulaData.get(j).cantidadTotal;
-			        	 fecha = sdf.format(listaSimulaData.get(j).created_day);
-			        	 attValues[0] = n.intValue();
-			        	 attValues[1]= dataset.attribute(1).parseDate(fecha);
+			        	 t1 = listaDia.get(i).paquetes_T1;
+			        	 t2 = listaDia.get(i).paquetes_T2;
+			        	 t3 = listaDia.get(i).paquetes_T3;
+			        	 
+			        	 fecha = sdf.format(listaDia.get(i).fecha);
+			        	 attValues[0] = t1.intValue();
+			        	 attValues[1] = t2.intValue();
+			        	 attValues[2] = t3.intValue();
+			        	 attValues[3]= dataset.attribute(3).parseDate(fecha);
 				         dataset.add(new DenseInstance(1.0, attValues));
 				         
+				         System.out.println("****Fin Lista*****");
 				         
-			         }
+				         
+	         }
 			         
-			         forecaster.setFieldsToForecast("cantEnvios");
+			         forecaster.setFieldsToForecast("cantPaquetesT1");
 			         forecaster.setBaseForecaster(new GaussianProcesses());
+			         
+			         forecaster.setFieldsToForecast("cantPaquetesT2");
+			         forecaster.setBaseForecaster(new GaussianProcesses());
+			         
+			         forecaster.setFieldsToForecast("cantPaquetesT3");
+			         forecaster.setBaseForecaster(new GaussianProcesses());
+			         
 			         
 			         forecaster.getTSLagMaker().setTimeStampField("Fecha");
 			         forecaster.getTSLagMaker().setPeriodicity(TSLagMaker.Periodicity.DAILY);
@@ -246,41 +265,45 @@ public class SimulacionController {
 			         for(int w = 0;w < numUT; w++){
 			        	 List<NumericPrediction> predsAtStep = forecast.get(w);
 			        	 
+			        	 
+			        	 
 			        	 NumericPrediction predForTarget = predsAtStep.get(0);
-			        	 System.out.println(w + ": " + predForTarget.predicted() + " ;");
+				         System.out.println(w + ": " + predForTarget.predicted() + " ;");
+				         rpta.listaSim.get(w).paquetes_T1=(int)predForTarget.predicted();
+				         
+				         predForTarget = predsAtStep.get(1);
+				         System.out.println(w + ": " + predForTarget.predicted() + " ;");
+				         rpta.listaSim.get(w).paquetes_T2=(int)predForTarget.predicted();
+				         
+				         predForTarget = predsAtStep.get(2);
+				         System.out.println(w + ": " + predForTarget.predicted() + " ;");
+				         rpta.listaSim.get(w).paquetes_T3=(int)predForTarget.predicted();			        	 
 			        	 
-			        	 AlmacenX insertAl = new AlmacenX();
-			        	 insertAl.id = listaAlmacenes.get(i).almacen_id;
-			        	 insertAl.nombre = listaAlmacenes.get(i).almacen_ciudad;
-			        	 insertAl.longitud = listaAlmacenes.get(i).almacen_longitud;
-			        	 insertAl.latitud = listaAlmacenes.get(i).almacen_latitud;
-			        	 insertAl.cantidadLleno = (int)((predForTarget.predicted() + 0.5));	
 			        	 
-			        	 if((insertAl.cantidadLleno < 0)){
-			        		 insertAl.cantidadLleno = 0;
+			        	 
+			        	 if((rpta.listaSim.get(w).paquetes_T1 < 0)){
+			        		 rpta.listaSim.get(w).paquetes_T1 = 0;
 			        	 }
-			        	 else{ 
-			        		 if(insertAl.cantidadLleno > 999){
-			        			 insertAl.cantidadLleno = 1000; //PEdidos
-			        			 
-			        			 if(caido != 1){
-			        				 AlmacenCaida almCaida = new AlmacenCaida();
-			        				 almCaida.almacen_id = insertAl.id;
-			        				 almCaida.dia_caida = w;
-			        				 almCaida.nombre_almacen = insertAl.nombre;
-			        				 rpta.listaCaidos.add(almCaida);
-			        				 caido = 1;
-			        			 }
-			        		 }
-			        	 }
-			        	 insertAl.capacidad = listaAlmacenes.get(i).almacen_capacidad;
-			        	 insertAl.porcentajeLlenado = insertAl.cantidadLleno/10;
 			        	 
-			        	 rpta.listaSim.get(w).almacenes.add(insertAl);
+			        	 if((rpta.listaSim.get(w).paquetes_T2 < 0)){
+			        		 rpta.listaSim.get(w).paquetes_T2 = 0;
+			        	 }
+			        	 
+			        	 if((rpta.listaSim.get(w).paquetes_T3 < 0)){
+			        		 rpta.listaSim.get(w).paquetes_T3 = 0;
+			        	 }
+			        	 
+			        	 
+			        	 if(rpta.listaSim.get(w).paquetes_T1+rpta.listaSim.get(w).paquetes_T2+rpta.listaSim.get(w).paquetes_T3>14000){
+			        		 rpta.listaSim.get(w).colapso=true;
+			        		 
+			        	 }
+			        		 
 			         }
-			         System.out.println("****Fin Lista*****");
-		         }
-	         }
+			         
+			         System.out.println("WEKA end :) ");     
+		         
+	         
 	         //Fin de los almacenes
 /*	         //Inicio vuelos
 	         System.out.println("WEKA working for Vuelos :)");

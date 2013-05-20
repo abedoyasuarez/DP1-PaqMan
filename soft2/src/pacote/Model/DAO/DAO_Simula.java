@@ -9,6 +9,7 @@ import java.util.List;
 import pacote.Model.Bean.SimulaAlmacen;
 import pacote.Model.Bean.SimulaDataAlmacen;
 import pacote.Model.Bean.SimulaDataVuelo;
+import pacote.Model.Bean.SimulaDia;
 import pacote.Model.Bean.SimulaVuelo;
 import pacote.Model.Bean.Response.AlmacenX;
 import pacote.Model.Bean.Response.VueloX;
@@ -239,5 +240,32 @@ public List<SimulaVuelo> dameListaSimulacionVuelo2(int pais_inicio, int pais_fin
 
 		rs.close();
 		return lreturn;
+	}
+	
+public List<SimulaDia> dameListaSimulacionDia() throws SQLException{
+		
+		String sql = "SELECT fecha, , almacen_longitud, almacen_capacidad, almacen_ciudad FROM dato_historico ";
+		PreparedStatement pst;
+		ResultSet rs = null;
+		
+		pst= conexion.conn.prepareStatement(sql);
+ 	    pst.execute();
+		
+ 	    rs = pst.getResultSet();
+
+		List<SimulaDia> listaDia = new ArrayList<SimulaDia>();
+		while(rs.next()){
+			SimulaDia dia = new SimulaDia();
+			dia.fecha=rs.getDate(1);
+			System.out.println("DIA " + dia.fecha );
+			dia.paquetes_T1=rs.getInt(2);
+			dia.paquetes_T2=rs.getInt(3);
+			dia.paquetes_T3=rs.getInt(4);
+			dia.pedidos=rs.getInt(5);
+			listaDia.add(dia);		
+		}
+		
+		rs.close();
+		return listaDia;
 	}
 }
