@@ -13,6 +13,14 @@ public class Ruta {
 	private Vehiculo vehiculo;
 	private List<Paquete> listaPaquetes;
 	
+	
+	public Nodo getUltimoNodo(){
+		int indice=trayectoria.size();
+		if (indice==0)return null;
+		
+		return trayectoria.get(indice);
+	}
+	
 	public int getId() {
 		return id;
 	}

@@ -118,4 +118,49 @@ public class Vehiculo {
 	}
 
 	
+	public int EquiparPaquetes(Pedido pedido){
+		
+		if(estado==0){
+			if (esPosibleEquipar(pedido)){
+				/*equipar(Pedido);
+				if (tienequeSalir()){
+					posicionRuta=0;
+					posicionRelativa=0;
+					estado=1;
+					regresarAlmacen();
+					
+				}*/
+			}
+			
+			
+		}
+		
+		
+		return 1;
+	}
+	
+	public boolean esPosibleEquipar(Pedido pedido){
+		
+		if (cantidadPaquetes==capacidad) return false;
+		Nodo ultimoNodo=rutaActual.getUltimoNodo();
+		int dist=pseudoDistancia(ultimoNodo,pedido.getNodoDestino());
+		if (rutaActual.getTrayectoria().size()==1) return true;
+		if (dist>pseudoDistancia(ultimoNodo,Simulacion.almacen))return false;
+		return true;
+		
+	}
+	public int pseudoDistancia(Nodo a,Nodo b){
+		
+		return Math.abs(a.coorX-b.coorX)+Math.abs(a.coorY-b.coorY);
+		
+	}
+	
+	public int Equipar(){
+		
+		
+		
+		
+		return 1;
+	}
+	
 } 

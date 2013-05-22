@@ -44,6 +44,7 @@ public class Respuesta {
 	        if(distanciaRecorrer>0){
 	        	vehiculo.setPosicionRuta(vehiculo.getPosicionRuta()+(int)distanciaRecorrer);
 	        	vehiculo.setDistanciaRecorrida(vehiculo.getDistanciaRecorrida()+distanciaRecorrer);
+	        	distanciaAcumulada+=(int)distanciaRecorrer;
 	        	if(distanciaRecorrer>=1) flag=1;	
 	        }
 	        if (vehiculo.getPosicionRuta()+1==vehiculo.getRutaActual().getTrayectoria().size()){
@@ -73,20 +74,58 @@ public class Respuesta {
 	private int solucion(){
 //		aguanta tu coche
 		int limite=0;
-		for(Pedido pedido:Simulacion.listaPedidos){
-			if(Simulacion.hastaIntervalo(pedido)){
+		for(int i=Simulacion.indicePedidoFinal+1;i<Simulacion.listaPedidos.size();i++){
+			
+			Pedido pedido=Simulacion.listaPedidos.get(i);
+			if(/*Simulacion.hastaIntervalo(pedido)*/ pedido.getMinutoLlegada()>Simulacion.minutoAcumulado+Simulacion.intervaloTiempo){
 				limite++;
 			} else break;
 		}
-		Collections.sort(Simulacion.listaPedidos.subList(0,limite),new pedidosComparator());
+		Simulacion.indicePedidoFinal+=limite;
+		Collections.sort(Simulacion.listaPedidos.subList(Simulacion.indicePedidoInicial,Simulacion.indicePedidoFinal),new pedidosComparator());
 		Collections.sort(this.listaMotos,new vehiculoComparator());
+		Collections.sort(this.listaAutos,new vehiculoComparator());
+		
+		for(int i=Simulacion.indicePedidoInicial;i<=Simulacion.indicePedidoFinal;i++){
+			Pedido pedido=Simulacion.listaPedidos.get(i);
+		
+			if (pedido.getMinutoLlegada()>Simulacion.minutoAcumulado+Simulacion.intervaloTiempo)break;
+			for(Vehiculo moto:this.listaMotos){
+				if (moto.getEstado()==0 || moto.getEstado()==2)continue;
+				moto.EquiparPaquetes(pedido);
+				if (pedido.getCantidadPaquetes()==0){
+						swapPedidos(pedido,Simulacion.listaPedidos.get(Simulacion.indicePedidoInicial));
+						Simulacion.indicePedidoInicial++;
+				}
+			}
+			for(Vehiculo auto:this.listaMotos){
+				if (auto.getEstado()==0 || auto.getEstado()==2)continue;
+				auto.EquiparPaquetes(pedido);
+				if (pedido.getCantidadPaquetes()==0){
+					swapPedidos(pedido,Simulacion.listaPedidos.get(Simulacion.indicePedidoInicial));
+					Simulacion.indicePedidoInicial++;
+				}
+			}
+		
+			
+		}
+		
+		
+		
 		
 		return 1;
 	}
 	
+	public void swapPedidos(Pedido p1,Pedido p2){
+		
+		Pedido Paux=new Pedido(p1);
+		p1=p2;
+		p2=Paux;
+		
+	}
 	public int planificarRespuesta(){
 		//planificar la respuesta en base a pedidos leidos
-		if(Simulacion.listaPedidos.size()==0||Simulacion.tiempoActual==4320){
+		if(Simulacion.listaPedidos.size()==0||Simulacion.tiempoActual==4320 || Simulacion.indicePedidoInicial>Simulacion.indicePedidoFinal){
 			return 0; //se acabó
 		}
 		solucion();
