@@ -1,4 +1,5 @@
 package paqman.Model.Bean;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -6,7 +7,36 @@ import java.util.List;
 public class Respuesta {
 	private List<Vehiculo> listaMotos;
 	private List<Vehiculo> listaAutos;
+	private List<Vehiculo> futuraListaMotos;
+	private List<Vehiculo> futuraListaAutos;
 	
+	public int inicializarRespuesta(){
+		
+		listaMotos=new ArrayList<Vehiculo>();
+		for (int i=0;i< Simulacion.cantidadMotos;i++){
+				Vehiculo moto=new Vehiculo();
+				moto.inicializarVehiculo(0,i);				
+				listaMotos.add(moto);
+				Vehiculo futuraMoto=new Vehiculo();
+				futuraMoto.inicializarVehiculo(0,i);				
+				futuraListaMotos.add(futuraMoto);
+				
+		}
+		listaAutos=new ArrayList<Vehiculo>();
+		for (int i=0;i< Simulacion.cantidadAutos;i++){
+				Vehiculo auto=new Vehiculo();
+				auto.inicializarVehiculo(1,i+Simulacion.cantidadMotos);
+				listaAutos.add(auto);
+				Vehiculo futuroAuto=new Vehiculo();
+				futuroAuto.inicializarVehiculo(1,i+Simulacion.cantidadMotos);				
+				futuraListaAutos.add(futuroAuto);
+		}
+		
+		
+		
+		
+		return 1;
+	}
 	public int modificarRespuesta(){
 		int flag=0;
 		flag+=modificarListaVehiculo(this.listaMotos);
@@ -21,8 +51,8 @@ public class Respuesta {
 			Vehiculo vehiculo=listaVehiculos.get(i);
 	        if (vehiculo.getRutaActual().getTrayectoria().size()==1 || vehiculo.getEstado()==0)continue;
 	        if (vehiculo.getEstado()==2){
-                vehiculo.setTiempoDescanso(vehiculo.getTiempoDescanso()+2);
-                if (vehiculo.getTiempoDescanso()==60) vehiculo.setTiempoDescanso(0);
+                vehiculo.setTiempoDescanzo(vehiculo.getTiempoDescanzo()+Simulacion.intervaloTiempo);
+                if (vehiculo.getTiempoDescanzo()==60) vehiculo.setTiempoDescanzo(0);
                 continue;
 	        }
 	        int posicionRelativa=vehiculo.getPosicionRelativa();
@@ -49,17 +79,36 @@ public class Respuesta {
 	        }
 	        if (vehiculo.getPosicionRuta()+1==vehiculo.getRutaActual().getTrayectoria().size()){
 	        	//Reset
-	        	Nodo nodoAlmacen=vehiculo.getRutaActual().getTrayectoria().get(0);
-	        	vehiculo.getRutaActual().getTrayectoria().clear();
-	        	vehiculo.getRutaActual().getTrayectoria().set(0, nodoAlmacen);
-	        	vehiculo.getRutaActual().getListaPaquetes().clear();
-	        	Paquete paquete=vehiculo.getRutaActual().getListaPaquetes().get(0);
-	        	vehiculo.getRutaActual().getListaPaquetes().set(0, paquete);
+	        	//Nodo nodoAlmacen=vehiculo.getRutaActual().getTrayectoria().get(0);
+	        	
+	        	//vehiculo.getRutaActual().getTrayectoria().clear();
+	        	//vehiculo.getRutaActual().getTrayectoria().add(nodoAlmacen);
+	        	
+	        	
+	        	if (vehiculo.getTipo()==0){//motos
+	        		int id=vehiculo.getId();
+	        		vehiculo.setRutaActual(this.futuraListaMotos.get(id).getRutaActual());
+	        		this.futuraListaMotos.get(id).setRutaActual(new Ruta());
+	        		this.futuraListaMotos.get(id).getRutaActual().inicializarRuta(vehiculo);
+	        	}
+	        	else {//autos
+	        		int id=vehiculo.getId()-Simulacion.cantidadMotos;
+	        		vehiculo.setRutaActual(this.futuraListaAutos.get(id).getRutaActual());
+	        		this.futuraListaAutos.get(id).setRutaActual(new Ruta());
+	        		this.futuraListaAutos.get(id).getRutaActual().inicializarRuta(vehiculo);
+	        		
+	        	}
+	        	
+	        	
+	        	vehiculo.getRutaActual().inicializarRuta(vehiculo);
+	        	//vehiculo.getRutaActual().getListaPaquetes().clear();
+	        	//Paquete paquete=vehiculo.getRutaActual().getListaPaquetes().get(0);
+	        	//vehiculo.getRutaActual().getListaPaquetes().add(paquete);
 	        	vehiculo.setCantidadPaquetes(0);
 	        	vehiculo.setPosicionRelativa(0);
 	        	vehiculo.setPosicionRuta(0);
 	        	vehiculo.setEstado(0);
-	        	vehiculo.setTiempoDescanso(0);
+	        	vehiculo.setTiempoDescanzo(0);
 	        	vehiculo.setTiempoTrabajo(0);
 	        	vehiculo.getRutaActual().setDistancia(0);
 	        	vehiculo.getRutaActual().setLlegadaAlmacen(Simulacion.getFechaActual(false));   	

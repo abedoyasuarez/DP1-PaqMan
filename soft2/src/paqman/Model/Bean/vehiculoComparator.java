@@ -5,7 +5,9 @@ import java.util.Comparator;
 public class vehiculoComparator implements Comparator<Vehiculo> {
 	@Override
 	public int compare(Vehiculo v1, Vehiculo v2) {
-		return 1;
+		
+		
+		return v1.getCantidadPaquetes()-v2.getCantidadPaquetes();
 	}
 }
 

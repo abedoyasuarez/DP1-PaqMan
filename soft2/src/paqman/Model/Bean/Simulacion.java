@@ -29,8 +29,19 @@ public class Simulacion {
 	public static List<Pedido> listaPedidosRecibidos;
 	public static List<Pedido> listaPedidos; //Para todos los pedidos
 	public static int [] patriarca;
+	public static int cantidadAutos;
+	public static int cantidadMotos;
+	public static int velocidadAutos;
+	public static int velocidadMotos;
+	public static int capacidadAutos;
+	public static int capacidadMotos;
+	public static double costoKmAutos;
+	public static double costoKmMotos;
+	public static double costoHE;
+	public static int idRutas;
 
-	public int inicializarSimulacion(int tiempoAct, int intervaloTiempo, double margenSeguridad,Nodo almacen){
+	public int inicializarSimulacion(int tiempoAct, int intervaloTiempo, double margenSeguridad,Nodo almacen,int cantAutos,int cantMotos, int vAutos,int vMotos,
+									 int capacidadAutos, int capacidadMotos, double costoKmAutos, double costoKmMotos, double costoHE){
 		this.tiempoActual=tiempoAct;
 		this.minutoAcumulado=0;
 		this.costo=0;
@@ -41,6 +52,16 @@ public class Simulacion {
 		this.listaPedidos=new ArrayList<Pedido>();
 		this.indicePedidoInicial=0;
 		this.indicePedidoFinal=0;
+		this.cantidadAutos=cantidadAutos;
+		this.cantidadMotos=cantidadMotos;
+		this.velocidadAutos=vAutos;
+		this.velocidadMotos=vMotos;
+		this.capacidadAutos=capacidadAutos;
+		this.capacidadMotos=capacidadMotos;
+		this.costoKmAutos=costoKmAutos;
+		this.costoKmMotos=costoKmMotos;
+		this.costoHE=costoHE;
+		this.idRutas=0;
 		return 1;
 	}
 
