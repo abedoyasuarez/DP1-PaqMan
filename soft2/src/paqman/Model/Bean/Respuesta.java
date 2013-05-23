@@ -100,7 +100,9 @@ public class Respuesta {
 	        	}
 	        	
 	        	
-	        	vehiculo.getRutaActual().inicializarRuta(vehiculo);
+	        	//vehiculo.getRutaActual().inicializarRuta(vehiculo);
+	        	
+	        	
 	        	//vehiculo.getRutaActual().getListaPaquetes().clear();
 	        	//Paquete paquete=vehiculo.getRutaActual().getListaPaquetes().get(0);
 	        	//vehiculo.getRutaActual().getListaPaquetes().add(paquete);

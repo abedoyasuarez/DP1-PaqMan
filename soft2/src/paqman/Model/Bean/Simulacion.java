@@ -83,9 +83,9 @@ public class Simulacion {
 		return 1;
 	}
 	
-	public  static int cargarPedidos(){
+	public  static int cargarIncidencia(){
 		Path myDir = Paths.get(".");
-		Path readFile=myDir.resolve("ArchivoPaquetes1.txt");
+		Path readFile=myDir.resolve("ArchivoIncidencias1.txt");
 		try{
 			String thisLine;
 			BufferedReader br = Files.newBufferedReader(readFile,Charset.forName("UTF-8"));
@@ -111,6 +111,36 @@ public class Simulacion {
 		}
 		return 1;
 	}
+	
+
+	public  static int cargarPedidos(){
+		Path myDir = Paths.get(".");
+		Path readFile=myDir.resolve("ArchivoPedidos1.txt");
+		try{
+			String thisLine;
+			BufferedReader br = Files.newBufferedReader(readFile,Charset.forName("UTF-8"));
+		    while ((thisLine = br.readLine()) != null) {
+		    	System.out.println(thisLine);
+		    	String[] splitDatosPedido=thisLine.split(" ");
+		    	String[] splitFecha=splitDatosPedido[0].split(":");
+		    	//Date fechaLlegada=new Date();
+		    	//fechaLlegada.setHours(Integer.parseInt(splitFecha[0]));
+		    	//fechaLlegada.setMinutes(Integer.parseInt(splitFecha[1]));
+		    	int minutoLlegada=Integer.parseInt(splitFecha[0])*60+Integer.parseInt(splitFecha[1]);
+		    	
+		    	int coordX=Integer.parseInt(splitDatosPedido[1]);
+		    	int coordY=Integer.parseInt(splitDatosPedido[2]);
+		    	int numPaquetes=Integer.parseInt(splitDatosPedido[3]);
+		    	int tiempoEntrega=Integer.parseInt(splitDatosPedido[5]);
+		    	Pedido pedido=new Pedido(coordX,coordY,numPaquetes,/*fechaLlegada,*/minutoLlegada, tiempoEntrega,splitDatosPedido[4]);
+		    	listaPedidos.add(pedido);
+		   }
+		   br.close();
+		} catch (IOException e){
+			System.err.println("Error: " + e.toString());
+		}
+		return 1;
+	}	
 	
 	public  int ejecutarSimulacion(){
 		this.inicializarSimulacion(/*tiempoActual*/0,/*intervaloTiempo*/ 2,/*margenSeguridad*/ 5,/*almacen*/ new Nodo (45,30),/*cantAutos*/ 20, /*cantMotos*/40,
