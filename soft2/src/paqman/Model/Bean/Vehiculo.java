@@ -1,4 +1,5 @@
 package paqman.Model.Bean;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Vehiculo {
@@ -122,14 +123,14 @@ public class Vehiculo {
 		
 		if(estado==0){
 			if (esPosibleEquipar(pedido)){
-				/*equipar(Pedido);
-				if (tienequeSalir()){
+				equipar(pedido);
+				if (tieneQueSalir()){
 					posicionRuta=0;
 					posicionRelativa=0;
-					estado=1;
+					estado=1;					
 					regresarAlmacen();
 					
-				}*/
+				}
 			}
 			
 			
@@ -155,12 +156,73 @@ public class Vehiculo {
 		
 	}
 	
-	public int Equipar(){
+	public int equipar(Pedido pedido){
 		
-		
+		int [] camino=Simulacion.BFS(this.getRutaActual().getUltimoNodo(),pedido.getNodoDestino());
+		//List <Nodo> subRuta=construirCamino(this.getRutaActual().getUltimoNodo().getCoorAbs(),camino);
+		this.rutaActual.añadirCamino(this.getRutaActual().getUltimoNodo().getCoorAbs(),camino);
+		int distancia=camino[(Mapa.filas+1)*(Mapa.columnas+1) +2];
+		if (pedido.getCantidadPaquetes()>this.getCapacidad()-this.getCantidadPaquetes()){
+			this.rutaActual.getListaPaquetes().add(new Paquete(this.capacidad-this.cantidadPaquetes,pedido,distancia,this.rutaActual.getTrayectoria().size()-1));
+			this.setCantidadPaquetes(this.capacidad);
+			pedido.setCantidadPaquetes(this.capacidad-this.cantidadPaquetes);
+			
+		}
+		else{
+			this.rutaActual.getListaPaquetes().add(new Paquete(pedido.getCantidadPaquetes(),pedido,distancia,this.rutaActual.getTrayectoria().size()-1));			
+			this.setCantidadPaquetes(pedido.getCantidadPaquetes());
+			pedido.setCantidadPaquetes(0);
+			
+		}
+		//en lista de paquetes se encuentra punto de entrega
+		//this.getRutaActual().getTrayectoria().addAll(subRuta);
 		
 		
 		return 1;
 	}
+	
+	public boolean tieneQueSalir(){
+		if (this.rutaActual.getTrayectoria().size()==1)return false;
+		if (this.cantidadPaquetes==this.capacidad) return true;	
+		double tiempoIda=((this.rutaActual.getTrayectoria().size()-1)*1.0/this.velocidad)*60.0;
+		int numeroClientes=this.rutaActual.getListaPaquetes().size();
+		int posX=this.rutaActual.getUltimoNodo().getCoorX();
+		int posY=this.rutaActual.getUltimoNodo().getCoorY();
+		int dist=pseudoDistancia(new Nodo(posX,posY), Simulacion.almacen);
+		double tiempoRegreso=(dist*1.0/this.velocidad)*60.0;
+		double tiempoRestante=8.0*60.0-(this.tiempoTrabajo+this.tiempoDescanso);
+		if (tiempoIda+tiempoRegreso>tiempoRestante-60.0) return true;
+		for (Paquete paquete:this.rutaActual.getListaPaquetes()){
+			Pedido pedido=paquete.getPedido();
+			if (pedido.getNodoDestino().coorAbs==Simulacion.almacen.getCoorAbs())continue;
+			if (paquete.getDistancia()/this.velocidad>=paquete.getPedido().getMinutoLlegada()+paquete.getPedido().getTiempoEntrega()-Simulacion.minutoAcumulado+Simulacion.margenSeguridad){
+				return true;
+			}
+			
+			
+		}
+		
+		return false;
+		
+	}
+	public void regresarAlmacen(){
+		int dist=this.rutaActual.getTrayectoria().size();
+		this.rutaActual.añadirCamino(Simulacion.almacen.getCoorAbs(), Simulacion.patriarca);
+		dist=this.rutaActual.getTrayectoria().size()-dist;
+		this.rutaActual.getListaPaquetes().add(new Paquete(0,null,dist,this.rutaActual.getTrayectoria().size()-1));
+		
+		
+	
+	}
+	
+	public List<Nodo> construirCamino(int nodo,int [] padre){
+		
+		if (padre[nodo]==nodo) return new ArrayList();
+		List<Nodo> aux=construirCamino(padre[nodo],padre);
+		if (padre[nodo]!=nodo)aux.add(new Nodo(nodo%Mapa.columnas,nodo/Mapa.columnas));	
+		
+		return aux;
+	}
+	
 	
 } 

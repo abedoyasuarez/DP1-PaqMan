@@ -12,7 +12,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class Simulacion {
 	public static int tiempoActual;
@@ -26,6 +28,7 @@ public class Simulacion {
 	public static int indicePedidoFinal;
 	public static List<Pedido> listaPedidosRecibidos;
 	public static List<Pedido> listaPedidos; //Para todos los pedidos
+	public static int [] patriarca;
 
 	public int inicializarSimulacion(int tiempoAct, int intervaloTiempo, double margenSeguridad,Nodo almacen){
 		this.tiempoActual=tiempoAct;
@@ -88,6 +91,7 @@ public class Simulacion {
 	
 	public static int ejecutarSimulacion(){
 		Simulacion.cargarPedidos();
+		patriarca=BFS(almacen,new Nodo(2000000,2000000));
 		Respuesta respuesta=new Respuesta();
 		while(respuesta.planificarRespuesta()==1);
 		return 1;
@@ -106,13 +110,43 @@ public class Simulacion {
 	}
 
 	
-	public static int [] BFS(){
+	public static int [] BFS(Nodo nodoInicio,Nodo nodoFin){
 		
-		int [] padre= new int [(Mapa.filas+1)*(Mapa.columnas+1) +1];
+		int [] padre= new int [(Mapa.filas+1)*(Mapa.columnas+1) +3];
 		boolean [] visitado=new boolean [(Mapa.filas+1)*(Mapa.columnas+1) +1];
 		
+		Queue <Pair<Nodo,Integer> >q = new LinkedList<Pair<Nodo,Integer>>(); 
+		visitado[nodoInicio.getCoorAbs()]=true;
+		for( int i=0 ; i < (Mapa.filas+1)*(Mapa.columnas+1) +1 ; i++ )visitado[i]=false;
+		padre[nodoInicio.getCoorAbs()]=nodoInicio.getCoorAbs();
+		q.add(new Pair(nodoInicio,0));
+		padre[(Mapa.filas+1)*(Mapa.columnas+1) +2]=2000000;
+		int [] dir= new int [4];
+		while (q.peek()!=null){
+			Nodo u=q.peek().getFirst();
+			int dist=q.peek().getSecond();
+			q.poll();
+			if (u.getCoorAbs()==nodoFin.getCoorAbs()){
+					padre[(Mapa.filas+1)*(Mapa.columnas+1) +2]=dist;
+					return padre;
+			}
+			dir[0]=Mapa.grafo.get(u.getCoorAbs()).up;
+			dir[1]=Mapa.grafo.get(u.getCoorAbs()).left;
+			dir[2]=Mapa.grafo.get(u.getCoorAbs()).down;
+			dir[3]=Mapa.grafo.get(u.getCoorAbs()).right;
+			
+			for( int i=0 ; i < 4 ; i++ ){
+				if(dir[i]!=-1 && !visitado[dir[i]]){
+					visitado[dir[i]]=true;
+					padre[dir[i]]=u.getCoorAbs();
+					q.add(new Pair(Mapa.grafo.get(dir[i]),dist+1));					
+				}
+				
+			}
+				
+		}
 		
-		return null;
+		return padre;
 	}
 	
 //	

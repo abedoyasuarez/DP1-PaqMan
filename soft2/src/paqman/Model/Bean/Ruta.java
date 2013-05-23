@@ -1,4 +1,5 @@
 package paqman.Model.Bean;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,15 @@ public class Ruta {
 		if (indice==0)return null;
 		
 		return trayectoria.get(indice);
+	}
+	
+	public void añadirCamino(int nodo,int [] padre){
+		
+		if (padre[nodo]==nodo) return;
+		añadirCamino(padre[nodo],padre);
+		if (padre[nodo]!=nodo)trayectoria.add(new Nodo(nodo%Mapa.columnas,nodo/Mapa.columnas));	
+		
+		
 	}
 	
 	public int getId() {

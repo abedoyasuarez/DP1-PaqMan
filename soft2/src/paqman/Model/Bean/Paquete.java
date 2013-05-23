@@ -7,6 +7,17 @@ public class Paquete {
 	private Pedido pedido;
 	private int cantidad; //Cantidad de paquetes a dejar en un punto de entrega
 	private int puntoEntrega;//Indice en la trayectoria
+	private int distancia;
+	
+	
+	public Paquete(int cantPaquetes,Pedido pedido,int distancia,int puntoEntrega){
+		this.cantidad=cantPaquetes;
+		this.pedido=pedido;
+		this.distancia=distancia;
+		this.puntoEntrega=puntoEntrega;
+	}
+	
+	
 	public int getPuntoEntrega() {
 		return puntoEntrega;
 	}
@@ -36,5 +47,17 @@ public class Paquete {
 	}
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
+	}
+
+
+	public int getDistancia() {
+		return distancia;
+	}
+
+
+	public void setDistancia(int distancia) {
+		this.distancia = distancia;
 	}	
+	
+	
 }
