@@ -28,6 +28,7 @@ public class Simulacion {
 	public static int indicePedidoFinal;
 	public static List<Pedido> listaPedidosRecibidos;
 	public static List<Pedido> listaPedidos; //Para todos los pedidos
+	public static List<Incidencia> listaIncidencias;
 	public static int [] patriarca;
 	public static int cantidadAutos;
 	public static int cantidadMotos;
@@ -51,6 +52,7 @@ public class Simulacion {
 		this.almacen=almacen;
 		this.listaPedidosRecibidos=new ArrayList<Pedido>();
 		this.listaPedidos=new ArrayList<Pedido>();
+		this.listaIncidencias=new ArrayList<Incidencia>();
 		this.indicePedidoInicial=0;
 		this.indicePedidoFinal=0;
 		this.cantidadAutos=cantidadAutos;
@@ -91,19 +93,15 @@ public class Simulacion {
 			BufferedReader br = Files.newBufferedReader(readFile,Charset.forName("UTF-8"));
 		    while ((thisLine = br.readLine()) != null) {
 		    	System.out.println(thisLine);
-		    	String[] splitDatosPedido=thisLine.split(" ");
-		    	String[] splitFecha=splitDatosPedido[0].split(":");
+		    	String[] splitDatosIncidencia=thisLine.split(" ");
+		    	String[] splitFecha=splitDatosIncidencia[0].split(":");
 		    	//Date fechaLlegada=new Date();
 		    	//fechaLlegada.setHours(Integer.parseInt(splitFecha[0]));
 		    	//fechaLlegada.setMinutes(Integer.parseInt(splitFecha[1]));
-		    	int minutoLlegada=Integer.parseInt(splitFecha[0])*60+Integer.parseInt(splitFecha[1]);
-		    	
-		    	int coordX=Integer.parseInt(splitDatosPedido[1]);
-		    	int coordY=Integer.parseInt(splitDatosPedido[2]);
-		    	int numPaquetes=Integer.parseInt(splitDatosPedido[3]);
-		    	int tiempoEntrega=Integer.parseInt(splitDatosPedido[5]);
-		    	Pedido pedido=new Pedido(coordX,coordY,numPaquetes,/*fechaLlegada,*/minutoLlegada, tiempoEntrega,splitDatosPedido[4]);
-		    	listaPedidos.add(pedido);
+		    	int minutoOcurrencia=Integer.parseInt(splitFecha[0])*60+Integer.parseInt(splitFecha[1]);
+		    	int id_Pedido=Integer.parseInt(splitDatosIncidencia[1]);
+		    	Incidencia incidencia=new Incidencia(minutoOcurrencia,id_Pedido);
+		    	listaIncidencias.add(incidencia);
 		   }
 		   br.close();
 		} catch (IOException e){
@@ -119,6 +117,7 @@ public class Simulacion {
 		try{
 			String thisLine;
 			BufferedReader br = Files.newBufferedReader(readFile,Charset.forName("UTF-8"));
+			int id=0;
 		    while ((thisLine = br.readLine()) != null) {
 		    	System.out.println(thisLine);
 		    	String[] splitDatosPedido=thisLine.split(" ");
@@ -132,8 +131,9 @@ public class Simulacion {
 		    	int coordY=Integer.parseInt(splitDatosPedido[2]);
 		    	int numPaquetes=Integer.parseInt(splitDatosPedido[3]);
 		    	int tiempoEntrega=Integer.parseInt(splitDatosPedido[5]);
-		    	Pedido pedido=new Pedido(coordX,coordY,numPaquetes,/*fechaLlegada,*/minutoLlegada, tiempoEntrega,splitDatosPedido[4]);
+		    	Pedido pedido=new Pedido(coordX,coordY,numPaquetes,/*fechaLlegada,*/minutoLlegada, tiempoEntrega,splitDatosPedido[4],id);
 		    	listaPedidos.add(pedido);
+		    	id++;
 		   }
 		   br.close();
 		} catch (IOException e){

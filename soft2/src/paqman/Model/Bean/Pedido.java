@@ -15,8 +15,9 @@ public class Pedido {
 	
 	
 	public Pedido(int coordX,int coordY, int cantidadPaquetes, /*Date horaLlegada,*/int minutoLlegada,
-			int tiempoEntrega, String cliente) {
+			int tiempoEntrega, String cliente, int id) {
 		super();
+		this.id=id;
 		this.nodoDestino = new Nodo(coordX,coordY);
 		this.cantidadPaquetes = cantidadPaquetes;
 		//this.horaLlegada = horaLlegada;
