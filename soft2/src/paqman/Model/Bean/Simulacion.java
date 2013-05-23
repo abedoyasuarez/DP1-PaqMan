@@ -37,11 +37,12 @@ public class Simulacion {
 	public static int capacidadMotos;
 	public static double costoKmAutos;
 	public static double costoKmMotos;
-	public static double costoHE;
+	public static double costoHEMoto;
+	public static double costoHECarro;
 	public static int idRutas;
 
-	public int inicializarSimulacion(int tiempoAct, int intervaloTiempo, double margenSeguridad,Nodo almacen,int cantAutos,int cantMotos, int vAutos,int vMotos,
-									 int capacidadAutos, int capacidadMotos, double costoKmAutos, double costoKmMotos, double costoHE){
+	public  int inicializarSimulacion(int tiempoAct, int intervaloTiempo, double margenSeguridad,Nodo almacen,int cantAutos,int cantMotos, int vAutos,int vMotos,
+									 int capacidadAutos, int capacidadMotos, double costoKmAutos, double costoKmMotos, double costoHEMoto, double costoHECarro){
 		this.tiempoActual=tiempoAct;
 		this.minutoAcumulado=0;
 		this.costo=0;
@@ -60,7 +61,8 @@ public class Simulacion {
 		this.capacidadMotos=capacidadMotos;
 		this.costoKmAutos=costoKmAutos;
 		this.costoKmMotos=costoKmMotos;
-		this.costoHE=costoHE;
+		this.costoHEMoto=costoHEMoto;
+		this.costoHECarro=costoHECarro;
 		this.idRutas=0;
 		return 1;
 	}
@@ -110,11 +112,14 @@ public class Simulacion {
 		return 1;
 	}
 	
-	public static int ejecutarSimulacion(){
-		Simulacion.cargarPedidos();
+	public  int ejecutarSimulacion(){
+		this.inicializarSimulacion(/*tiempoActual*/0,/*intervaloTiempo*/ 2,/*margenSeguridad*/ 5,/*almacen*/ new Nodo (45,30),/*cantAutos*/ 20, /*cantMotos*/40,
+								   /*vAutos*/30,/*vMotos*/ 60, /*capacidadAutos*/25, /*capacidadMotos*/4, /*costoKmAutos*/5, /*costoKmMotos*/3, /*costoHEMoto*/8.0,/*costoHECarro*/12.0);
+		cargarPedidos();
 		patriarca=BFS(almacen,new Nodo(2000000,2000000));
 		Respuesta respuesta=new Respuesta();
 		while(respuesta.planificarRespuesta()==1);
+		System.out.printf("El costo Total es: %lf \n",Simulacion.costo);
 		return 1;
 	}
 	

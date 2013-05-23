@@ -28,7 +28,7 @@ public class Vehiculo {
 		this.id=codigo;
 		this.tipo=tipo;		
 		this.cantidadPaquetes=0;
-		this.costoHE=Simulacion.costoHE;
+		
 		this.tiempoTrabajo=0;
 		this.tiempoDescanzo=0;
 		this.estado=0;
@@ -44,13 +44,14 @@ public class Vehiculo {
 			this.capacidad=Simulacion.capacidadMotos;
 			this.velocidad=Simulacion.velocidadMotos;
 			this.costoPorKm=Simulacion.costoKmMotos;
-			
+			this.costoHE=Simulacion.costoHEMoto;
 			
 		}
 		else{//autos
 			this.capacidad=Simulacion.capacidadAutos;
 			this.velocidad=Simulacion.velocidadAutos;
 			this.costoPorKm=Simulacion.costoKmAutos;
+			this.costoHE=Simulacion.costoHECarro;
 			
 		}
 		this.saltoDistancia=60.0/(this.velocidad*1.0);
