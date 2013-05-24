@@ -47,12 +47,27 @@ public class Respuesta {
 	public int modificarListaVehiculo(List<Vehiculo> listaVehiculos) {
 		int flag=0;
 		int i;
+		
 		for(i=0;i<listaVehiculos.size();i++){
+			
 			Vehiculo vehiculo=listaVehiculos.get(i);
 	        if (vehiculo.getRutaActual().getTrayectoria().size()==1 || vehiculo.getEstado()==0)continue;
+	        if (sufreIncidencia(vehiculo)){destruirRutavehiculo(vehiculo);continue;}
+	        
 	        if (vehiculo.getEstado()==2){
                 vehiculo.setTiempoDescanzo(vehiculo.getTiempoDescanzo()+Simulacion.intervaloTiempo);
-                if (vehiculo.getTiempoDescanzo()==60) vehiculo.setTiempoDescanzo(0);
+                if (vehiculo.getTiempoDescanzo()==60) {
+                	vehiculo.setTiempoDescanzo(0);
+                	vehiculo.setEstado(vehiculo.getEstadoAnterior());
+                }
+                continue;
+	        }
+	        if (vehiculo.getEstado()==3){
+                vehiculo.setTiempoReparacion(vehiculo.getTiempoReparacion()+Simulacion.intervaloTiempo);
+                if (vehiculo.getTiempoReparacion()==60) {
+                	vehiculo.setEstado(0);
+                	vehiculo.setTiempoReparacion(0);
+                }
                 continue;
 	        }
 	        int posicionRelativa=vehiculo.getPosicionRelativa();
@@ -62,11 +77,14 @@ public class Respuesta {
 	        while(posicionRelativa<vehiculo.getRutaActual().getListaPaquetes().size()&&(
 	        		vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa+1).getPuntoEntrega() -
 	        		vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa).getPuntoEntrega())<=distanciaRecorrer){
+	        	
+	        	vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa+1).setEstado(2);
 	        	vehiculo.setCantidadPaquetes(vehiculo.getCantidadPaquetes()-vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa).getCantidad());
 	        	distanciaAcumulada+=vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa+1).getPuntoEntrega()-
 	        			vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa).getPuntoEntrega();
 	        	distanciaRecorrer-=distanciaAcumulada;
 	        	posicionRelativa++;
+	        	
 	        	flag=1;
 	        }
 	        vehiculo.setPosicionRelativa(posicionRelativa);
@@ -110,6 +128,7 @@ public class Respuesta {
 	        	vehiculo.setPosicionRelativa(0);
 	        	vehiculo.setPosicionRuta(0);
 	        	vehiculo.setEstado(0);
+	        	vehiculo.setEstadoAnterior(0);
 	        	vehiculo.setTiempoDescanzo(0);
 	        	vehiculo.setTiempoTrabajo(0);
 	        	vehiculo.getRutaActual().setDistancia(0);
@@ -136,33 +155,8 @@ public class Respuesta {
 		Collections.sort(Simulacion.listaPedidos.subList(Simulacion.indicePedidoInicial,Simulacion.indicePedidoFinal),new pedidosComparator());
 		Collections.sort(this.listaMotos,new vehiculoComparator());
 		Collections.sort(this.listaAutos,new vehiculoComparator());
-		
-		for(int i=Simulacion.indicePedidoInicial;i<=Simulacion.indicePedidoFinal;i++){
-			Pedido pedido=Simulacion.listaPedidos.get(i);
-		
-			if (pedido.getMinutoLlegada()>Simulacion.minutoAcumulado+Simulacion.intervaloTiempo)break;
-			for(Vehiculo moto:this.listaMotos){
-				if (moto.getEstado()==0 || moto.getEstado()==2)continue;
-				moto.EquiparPaquetes(pedido);
-				if (pedido.getCantidadPaquetes()==0){
-						swapPedidos(pedido,Simulacion.listaPedidos.get(Simulacion.indicePedidoInicial));
-						Simulacion.indicePedidoInicial++;
-				}
-			}
-			for(Vehiculo auto:this.listaMotos){
-				if (auto.getEstado()==0 || auto.getEstado()==2)continue;
-				auto.EquiparPaquetes(pedido);
-				if (pedido.getCantidadPaquetes()==0){
-					swapPedidos(pedido,Simulacion.listaPedidos.get(Simulacion.indicePedidoInicial));
-					Simulacion.indicePedidoInicial++;
-				}
-			}
-		
-			
-		}
-		
-		
-		
+		AtenderPedidosConIncidencia();
+		AtenderPedidos();
 		
 		return 1;
 	}
@@ -182,5 +176,103 @@ public class Respuesta {
 		solucion();
 		return 1;
 	}
+	
+	public boolean sufreIncidencia(Vehiculo vehiculo){
+		
+		for (int i=Simulacion.indiceIncidenciaInicial;i<Simulacion.listaIncidencias.size();i++){
+			if (Simulacion.listaIncidencias.get(i).getMinutoOcurrencia()>Simulacion.minutoAcumulado+Simulacion.intervaloTiempo)break;
+			int idPedido=Simulacion.listaIncidencias.get(i).getIdPedido();
+			for (Paquete paquete:vehiculo.getRutaActual().getListaPaquetes()){
+				if (paquete.getPedido().getId()==idPedido && paquete.getEstado()==1)return true;				
+				
+			}			
+			Simulacion.indiceIncidenciaInicial++;		
+		}
+		
+		
+		return false;
+	}
+	public int destruirRutavehiculo(Vehiculo vehiculo){
+		
+		vehiculo.setEstado(3);
+		
+		//Ruta ruta=vehiculo.getRutaActual();
+		for (int i=vehiculo.getPosicionRelativa()+1;i<vehiculo.getRutaActual().getListaPaquetes().size();i++){
+			if (vehiculo.getRutaActual().getListaPaquetes().get(i).getEstado()==1){
+				Pedido pedido=vehiculo.getRutaActual().getListaPaquetes().get(i).getPedido();
+				Simulacion.listaPedidosConIncidencia.add(new Pedido(pedido.getNodoDestino().getCoorX(),pedido.getNodoDestino().getCoorY(),
+														vehiculo.getRutaActual().getListaPaquetes().get(i).getCantidad(),
+														pedido.getMinutoLlegada(),pedido.getTiempoEntrega(),pedido.getCliente(),Simulacion.idPedidos++));
+				Ruta rutaNueva=new Ruta();
+				rutaNueva.inicializarRuta(vehiculo);
+				vehiculo.setRutaActual(rutaNueva);
+				return 1;
+			}
+			
+		}
+		
+		
+		return 0;
+	}
+	
+	public int AtenderPedidosConIncidencia(){
+		
+		for (int i=Simulacion.indicePedidoConIncidenciaInicial;i<Simulacion.listaPedidosConIncidencia.size();i++){
+			Pedido pedido=Simulacion.listaPedidosConIncidencia.get(i);
+			
+			if (pedido.getMinutoLlegada()>Simulacion.minutoAcumulado+Simulacion.intervaloTiempo)break;
+			for(Vehiculo moto:this.listaMotos){
+				if (moto.getEstado()==2 || moto.getEstado()==3)continue;
+				moto.EquiparPaquetes(pedido);
+				if (pedido.getCantidadPaquetes()==0){
+						swapPedidos(pedido,Simulacion.listaPedidosConIncidencia.get(Simulacion.indicePedidoConIncidenciaInicial++));
+						
+				}
+			}
+			for(Vehiculo auto:this.listaMotos){
+				if (auto.getEstado()==2 || auto.getEstado()==3)continue;
+				auto.EquiparPaquetes(pedido);
+				if (pedido.getCantidadPaquetes()==0){
+					swapPedidos(pedido,Simulacion.listaPedidosConIncidencia.get(Simulacion.indicePedidoConIncidenciaInicial++));
+					
+				}
+			}
+			
+			
+			
+			
+		}
+		
+		return 1;	
+	}
+	
+	public int AtenderPedidos(){
+		
+		for(int i=Simulacion.indicePedidoInicial;i<=Simulacion.indicePedidoFinal;i++){
+			Pedido pedido=Simulacion.listaPedidos.get(i);
+		
+			if (pedido.getMinutoLlegada()>Simulacion.minutoAcumulado+Simulacion.intervaloTiempo)break;
+			for(Vehiculo moto:this.listaMotos){
+				if (moto.getEstado()==2 || moto.getEstado()==3)continue;
+				moto.EquiparPaquetes(pedido);
+				if (pedido.getCantidadPaquetes()==0){
+						swapPedidos(pedido,Simulacion.listaPedidos.get(Simulacion.indicePedidoInicial++));
+				}
+			}
+			for(Vehiculo auto:this.listaMotos){
+				if (auto.getEstado()==2 || auto.getEstado()==3)continue;
+				auto.EquiparPaquetes(pedido);
+				if (pedido.getCantidadPaquetes()==0){
+					swapPedidos(pedido,Simulacion.listaPedidos.get(Simulacion.indicePedidoInicial++));
+				}
+			}
+		
+			
+		}
+		
+	
+		return 1;
+	}
+	
 }
 

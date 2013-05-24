@@ -15,6 +15,7 @@ public class Paquete {
 		this.pedido=pedido;
 		this.distancia=distancia;
 		this.puntoEntrega=puntoEntrega;
+		this.estado=0;
 	}
 	
 	

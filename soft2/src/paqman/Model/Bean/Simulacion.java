@@ -26,7 +26,7 @@ public class Simulacion {
 	public static Nodo almacen;
 	public static int indicePedidoInicial;
 	public static int indicePedidoFinal;
-	public static List<Pedido> listaPedidosRecibidos;
+	public static List<Pedido> listaPedidosConIncidencia;
 	public static List<Pedido> listaPedidos; //Para todos los pedidos
 	public static List<Incidencia> listaIncidencias;
 	public static int [] patriarca;
@@ -41,6 +41,9 @@ public class Simulacion {
 	public static double costoHEMoto;
 	public static double costoHECarro;
 	public static int idRutas;
+	public static int idPedidos;
+	public static int indiceIncidenciaInicial;
+	public static int indicePedidoConIncidenciaInicial;
 
 	public  int inicializarSimulacion(int tiempoAct, int intervaloTiempo, double margenSeguridad,Nodo almacen,int cantAutos,int cantMotos, int vAutos,int vMotos,
 									 int capacidadAutos, int capacidadMotos, double costoKmAutos, double costoKmMotos, double costoHEMoto, double costoHECarro){
@@ -50,11 +53,13 @@ public class Simulacion {
 		this.intervaloTiempo=intervaloTiempo;
 		this.margenSeguridad=margenSeguridad;
 		this.almacen=almacen;
-		this.listaPedidosRecibidos=new ArrayList<Pedido>();
+		this.listaPedidosConIncidencia=new ArrayList<Pedido>();
 		this.listaPedidos=new ArrayList<Pedido>();
 		this.listaIncidencias=new ArrayList<Incidencia>();
 		this.indicePedidoInicial=0;
 		this.indicePedidoFinal=0;
+		this.indiceIncidenciaInicial=0;
+		this.indicePedidoConIncidenciaInicial=0;
 		this.cantidadAutos=cantidadAutos;
 		this.cantidadMotos=cantidadMotos;
 		this.velocidadAutos=vAutos;
@@ -66,6 +71,7 @@ public class Simulacion {
 		this.costoHEMoto=costoHEMoto;
 		this.costoHECarro=costoHECarro;
 		this.idRutas=0;
+		this.idPedidos=0;
 		return 1;
 	}
 
@@ -117,7 +123,7 @@ public class Simulacion {
 		try{
 			String thisLine;
 			BufferedReader br = Files.newBufferedReader(readFile,Charset.forName("UTF-8"));
-			int id=0;
+			//int id=0;
 		    while ((thisLine = br.readLine()) != null) {
 		    	System.out.println(thisLine);
 		    	String[] splitDatosPedido=thisLine.split(" ");
@@ -131,9 +137,9 @@ public class Simulacion {
 		    	int coordY=Integer.parseInt(splitDatosPedido[2]);
 		    	int numPaquetes=Integer.parseInt(splitDatosPedido[3]);
 		    	int tiempoEntrega=Integer.parseInt(splitDatosPedido[5]);
-		    	Pedido pedido=new Pedido(coordX,coordY,numPaquetes,/*fechaLlegada,*/minutoLlegada, tiempoEntrega,splitDatosPedido[4],id);
+		    	Pedido pedido=new Pedido(coordX,coordY,numPaquetes,/*fechaLlegada,*/minutoLlegada, tiempoEntrega,splitDatosPedido[4],Simulacion.idPedidos++);
 		    	listaPedidos.add(pedido);
-		    	id++;
+		    	//id++;
 		   }
 		   br.close();
 		} catch (IOException e){
@@ -146,6 +152,7 @@ public class Simulacion {
 		this.inicializarSimulacion(/*tiempoActual*/0,/*intervaloTiempo*/ 2,/*margenSeguridad*/ 5,/*almacen*/ new Nodo (45,30),/*cantAutos*/ 20, /*cantMotos*/40,
 								   /*vAutos*/30,/*vMotos*/ 60, /*capacidadAutos*/25, /*capacidadMotos*/4, /*costoKmAutos*/5, /*costoKmMotos*/3, /*costoHEMoto*/8.0,/*costoHECarro*/12.0);
 		cargarPedidos();
+		cargarIncidencia();
 		patriarca=BFS(almacen,new Nodo(2000000,2000000));
 		Respuesta respuesta=new Respuesta();
 		while(respuesta.planificarRespuesta()==1);

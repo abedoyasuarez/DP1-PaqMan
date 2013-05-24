@@ -12,15 +12,18 @@ public class Vehiculo {
 	private double costoHE;//costo por hora recorrida
 	
 	private int tiempoTrabajo;
-	private int estado; // 0 EN ALMACEN - 1 EN CAMINO - 2 DESCANZO 
+	private int estado; // 0 EN ALMACEN - 1 EN CAMINO - 2 DESCANZO - 3 REPARACION
+	private int estadoAnterior;
 	private int turno; //TURNO 0 - 1 - 2		
 	private int posicionRuta; //
 	private double saltoDistancia;
 	private double distanciaRecorrida; //distancia recorrida de la ruta
 	private int posicionRelativa; //indice de un nodo de la ruta	
 	private int	tiempoDescanzo;
+	private int tiempoReparacion;
 	private Ruta rutaActual;
 	private double costoPorKm;
+	
 	//private List<Ruta> listaRutas; no se necesita historico
 	
 	public void inicializarVehiculo(int tipo,int codigo){
@@ -31,7 +34,9 @@ public class Vehiculo {
 		
 		this.tiempoTrabajo=0;
 		this.tiempoDescanzo=0;
+		this.tiempoReparacion=0;
 		this.estado=0;
+		this.estadoAnterior=0;
 		this.turno=0;
 		this.posicionRuta=-1;
 		this.distanciaRecorrida=0.0;
@@ -157,6 +162,30 @@ public class Vehiculo {
 		this.costoHE = costoHE;
 	}
 	
+	public int getTiempoReparacion() {
+		return tiempoReparacion;
+	}
+
+
+
+	public void setTiempoReparacion(int tiempoReparacion) {
+		this.tiempoReparacion = tiempoReparacion;
+	}
+
+
+
+	public int getEstadoAnterior() {
+		return estadoAnterior;
+	}
+
+
+
+	public void setEstadoAnterior(int estadoAnterior) {
+		this.estadoAnterior = estadoAnterior;
+	}
+
+
+
 	public int EquiparPaquetes(Pedido pedido){
 		
 		if(estado==0){
@@ -166,8 +195,11 @@ public class Vehiculo {
 					posicionRuta=0;
 					posicionRelativa=0;
 					estado=1;
+					estadoAnterior=1;
 					this.rutaActual.setMinutoSalidaAlmacen(Simulacion.minutoAcumulado);
-					
+					for(Paquete paquete:this.rutaActual.getListaPaquetes()){
+						paquete.setEstado(1);
+					}
 					regresarAlmacen();
 					this.rutaActual.setMinutoLlegadaAlmacen(Simulacion.minutoAcumulado+(this.rutaActual.getDistancia()*60/this.velocidad));
 				}
