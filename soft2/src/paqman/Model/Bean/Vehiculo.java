@@ -188,7 +188,7 @@ public class Vehiculo {
 
 	public int EquiparPaquetes(Pedido pedido){
 		
-		if(estado==0){
+		if(estado==0 || estado==1){
 			if (esPosibleEquipar(pedido)){
 				equipar(pedido);
 				if (tieneQueSalir()){

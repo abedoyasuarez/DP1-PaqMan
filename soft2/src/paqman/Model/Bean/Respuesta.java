@@ -105,15 +105,24 @@ public class Respuesta {
 	        	
 	        	if (vehiculo.getTipo()==0){//motos
 	        		int id=vehiculo.getId();
-	        		vehiculo.setRutaActual(this.futuraListaMotos.get(id).getRutaActual());
-	        		this.futuraListaMotos.get(id).setRutaActual(new Ruta());
-	        		this.futuraListaMotos.get(id).getRutaActual().inicializarRuta(vehiculo);
+	        		vehiculo=this.futuraListaMotos.get(id);
+	        		Vehiculo nuevaMoto=new Vehiculo();
+	        		nuevaMoto.inicializarVehiculo(0,id);
+	        		this.futuraListaMotos.set(id,nuevaMoto);
+	        		//vehiculo.setRutaActual(this.futuraListaMotos.get(id).getRutaActual());
+	        		//this.futuraListaMotos.get(id).setRutaActual(new Ruta());
+	        		//this.futuraListaMotos.get(id).getRutaActual().inicializarRuta(vehiculo);
 	        	}
 	        	else {//autos
 	        		int id=vehiculo.getId()-Simulacion.cantidadMotos;
-	        		vehiculo.setRutaActual(this.futuraListaAutos.get(id).getRutaActual());
+	        		vehiculo=this.futuraListaAutos.get(id);
+	        		Vehiculo nuevoCarro=new Vehiculo();
+	        		nuevoCarro.inicializarVehiculo(1,id);
+	        		this.futuraListaAutos.set(id,nuevoCarro);
+	        		
+	        		/*vehiculo.setRutaActual(this.futuraListaAutos.get(id).getRutaActual());
 	        		this.futuraListaAutos.get(id).setRutaActual(new Ruta());
-	        		this.futuraListaAutos.get(id).getRutaActual().inicializarRuta(vehiculo);
+	        		this.futuraListaAutos.get(id).getRutaActual().inicializarRuta(vehiculo);*/
 	        		
 	        	}
 	        	
@@ -124,7 +133,8 @@ public class Respuesta {
 	        	//vehiculo.getRutaActual().getListaPaquetes().clear();
 	        	//Paquete paquete=vehiculo.getRutaActual().getListaPaquetes().get(0);
 	        	//vehiculo.getRutaActual().getListaPaquetes().add(paquete);
-	        	vehiculo.setCantidadPaquetes(0);
+	        	
+	        	/*vehiculo.setCantidadPaquetes(0);
 	        	vehiculo.setPosicionRelativa(0);
 	        	vehiculo.setPosicionRuta(0);
 	        	vehiculo.setEstado(0);
@@ -132,7 +142,7 @@ public class Respuesta {
 	        	vehiculo.setTiempoDescanzo(0);
 	        	vehiculo.setTiempoTrabajo(0);
 	        	vehiculo.getRutaActual().setDistancia(0);
-	        	vehiculo.getRutaActual().setLlegadaAlmacen(Simulacion.getFechaActual(false));   	
+	        	vehiculo.getRutaActual().setLlegadaAlmacen(Simulacion.getFechaActual(false));  */ 	
 	        }
 	        vehiculo.setTiempoTrabajo(vehiculo.getTiempoTrabajo()+Simulacion.intervaloTiempo);
 	        double costoHE=(vehiculo.getTiempoTrabajo()>480)?(Simulacion.intervaloTiempo*vehiculo.getCostoHE()/60.0):0;
@@ -217,28 +227,34 @@ public class Respuesta {
 	
 	public int AtenderPedidosConIncidencia(){
 		
+		boolean atendido=false;
 		for (int i=Simulacion.indicePedidoConIncidenciaInicial;i<Simulacion.listaPedidosConIncidencia.size();i++){
 			Pedido pedido=Simulacion.listaPedidosConIncidencia.get(i);
-			
+			atendido=false;
 			if (pedido.getMinutoLlegada()>Simulacion.minutoAcumulado+Simulacion.intervaloTiempo)break;
 			for(Vehiculo moto:this.listaMotos){
 				if (moto.getEstado()==2 || moto.getEstado()==3)continue;
-				moto.EquiparPaquetes(pedido);
+				if (moto.getEstado()==0) moto.EquiparPaquetes(pedido);
+				else if (moto.getEstado()==1) this.futuraListaMotos.get(moto.getId()).EquiparPaquetes(pedido);
 				if (pedido.getCantidadPaquetes()==0){
 						swapPedidos(pedido,Simulacion.listaPedidosConIncidencia.get(Simulacion.indicePedidoConIncidenciaInicial++));
-						
+						atendido=true;
+						break;
 				}
 			}
 			for(Vehiculo auto:this.listaMotos){
+				if (atendido) break;
 				if (auto.getEstado()==2 || auto.getEstado()==3)continue;
-				auto.EquiparPaquetes(pedido);
+				if (auto.getEstado()==0)auto.EquiparPaquetes(pedido);
+				else if (auto.getEstado()==1) this.futuraListaAutos.get(auto.getId()-this.futuraListaMotos.size()).EquiparPaquetes(pedido);
 				if (pedido.getCantidadPaquetes()==0){
 					swapPedidos(pedido,Simulacion.listaPedidosConIncidencia.get(Simulacion.indicePedidoConIncidenciaInicial++));
-					
+					atendido=true;
+					break;
 				}
 			}
 			
-			
+			if (!atendido) break;
 			
 			
 		}
@@ -248,26 +264,34 @@ public class Respuesta {
 	
 	public int AtenderPedidos(){
 		
+		boolean atendido=false;
 		for(int i=Simulacion.indicePedidoInicial;i<=Simulacion.indicePedidoFinal;i++){
 			Pedido pedido=Simulacion.listaPedidos.get(i);
-		
+			atendido=false;
 			if (pedido.getMinutoLlegada()>Simulacion.minutoAcumulado+Simulacion.intervaloTiempo)break;
 			for(Vehiculo moto:this.listaMotos){
 				if (moto.getEstado()==2 || moto.getEstado()==3)continue;
-				moto.EquiparPaquetes(pedido);
+				if (moto.getEstado()==0) moto.EquiparPaquetes(pedido);
+				else if (moto.getEstado()==1) this.futuraListaMotos.get(moto.getId()).EquiparPaquetes(pedido);
 				if (pedido.getCantidadPaquetes()==0){
 						swapPedidos(pedido,Simulacion.listaPedidos.get(Simulacion.indicePedidoInicial++));
+						atendido=true;
+						break;
 				}
 			}
 			for(Vehiculo auto:this.listaMotos){
+				if (atendido) break;
 				if (auto.getEstado()==2 || auto.getEstado()==3)continue;
-				auto.EquiparPaquetes(pedido);
+				if (auto.getEstado()==0)auto.EquiparPaquetes(pedido);
+				else if (auto.getEstado()==1) this.futuraListaAutos.get(auto.getId()-this.futuraListaMotos.size()).EquiparPaquetes(pedido);
 				if (pedido.getCantidadPaquetes()==0){
 					swapPedidos(pedido,Simulacion.listaPedidos.get(Simulacion.indicePedidoInicial++));
+					atendido=true;
+					break;
 				}
 			}
 		
-			
+			if (!atendido) break;
 		}
 		
 	
