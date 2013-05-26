@@ -1,6 +1,5 @@
 package pacote.Controller;
 
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ import pacote.Model.Bean.Simul;
 import pacote.Model.Bean.SimulaAlmacen;
 import pacote.Model.Bean.SimulaDataAlmacen;
 import pacote.Model.Bean.SimulaDataVuelo;
-import pacote.Model.Bean.SimulaDia;
+//import pacote.Model.Bean.SimulaDia;
 import pacote.Model.Bean.SimulaVuelo;
 import pacote.Model.Bean.VueloCaida;
 import pacote.Model.Bean.Vuelo_Padre;
@@ -34,6 +33,7 @@ import pacote.Model.DAO.DAO_Almacen;
 import pacote.Model.DAO.DAO_Vuelo_Padre;
 import pacote.Model.Facade.SimulacionFacade;
 import pacote.Model.Service.SimulaService;
+import paqman.Model.Bean.Simulacion;
 
 import weka.core.Instances;
 import weka.classifiers.Classifier;
@@ -150,8 +150,20 @@ public class SimulacionController {
     public String mapa(){
     	return "../WEB-INF/Sistema Web/Simulacion/mapa.jsp";
     }   
-     
-     
+    
+     //DIA A DIA
+ 	@RequestMapping(value = "/diadia/simularDiaDia")
+    public String simulacionDiaDia(){
+    	return "../WEB-INF/Sistema Web/DiaDia/diadia.jsp";
+    }
+	
+	@RequestMapping(value = "/Simulacion/iniciaDiaDia", method = RequestMethod.POST)
+	public @ResponseBody int iniciaSimulacionDiaADia(){
+		Simulacion simulaDiaADia=new Simulacion();	
+		simulaDiaADia.ejecutarSimulacion();
+		return 0;
+	}
+    // FIN DIA A DIA
      @RequestMapping(value = "/Simulacion/hardcode2", method = RequestMethod.POST)
      public @ResponseBody RetornoSimulacion SilumacionPacote(@RequestBody Simul s) throws Exception {
     	 
@@ -159,7 +171,7 @@ public class SimulacionController {
     	 
     	 rpta.me = "";
     	 
-    	 int numUT = Integer.parseInt(s.ff);		
+    	 /*int numUT = Integer.parseInt(s.ff);		
     	 List<AlmacenesSimula> almacenesSim = s.listaAlmacenes; 
     	     	 
     	 System.out.println("Inicia Simulacion");
@@ -419,12 +431,12 @@ public class SimulacionController {
 	         //Fin vuelos
 	*/                  
 	         
-    	 }
+    	 /*}
 	     catch(Exception e){
 	    	 rpta.me = "Error :(";
 	    	 e.printStackTrace();
 	    	 System.out.println("CATCH");
-	     }
+	     }*/
          
          
     	 return rpta;
