@@ -24,7 +24,7 @@
                  #footer {
                     width: 100%;
                     clear: both;
-                    background: black;
+                    background: rgb(250, 142, 138);
                     padding-top: 10px;
                     padding-bottom: 10px;
                     font-size: 14px;
