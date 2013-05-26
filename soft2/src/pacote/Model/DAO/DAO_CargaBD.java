@@ -9,20 +9,20 @@ public class DAO_CargaBD extends ConnectBD {
 	
 	public void cargarDatos() throws Exception{
 		
-		File directorio = new File("C:/Users/Julio/Downloads/DatosHistoricos"/*path en donde estaran los files*/);
+		File directorio = new File("/soft/src/pacote/Model/DAO/ArchivosDatosHistoricos"/*path en donde estaran los files*/);
 		File[] archivos = directorio.listFiles();
 		String insert;
 		
 		try{
 			
 			statement = conexion.conn.createStatement();
-			FileReader reader;
-			BufferedReader br;
+			//FileReader reader;
+			//BufferedReader br;
 			
 			for (File path:archivos){
 				
-				reader = new FileReader(path.toString());
-				br = new BufferedReader(reader);
+				//reader = new FileReader(path.toString());
+				//br = new BufferedReader(reader);
 				String input = "";
 				String filename = path.getName().toString();
 				String year = filename.substring(5, 7);
@@ -30,13 +30,14 @@ public class DAO_CargaBD extends ConnectBD {
 				String day = filename.substring(9, 11);
 				String fecha = year+"/"+month+"/"+day;
 				
-				while ((input = br.readLine()) != null){
+				//while ((input = br.readLine()) != null){
 					
-					input = "'" + input.substring(0,5) + "'" + input.substring(5,input.length());
-					insert = "INSERT INTO Pedido_Historico_Test VALUES('" + fecha + "'," + input +")";
+					insert = "LOAD DATA LOCAL INFILE "+ path +" INTO TABLE `inf2260981g5`.`Pedido_Historico_Test_2` FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (hora,coordx,coordy,paquetes,idcliente,prioridad) set fecha = '"+ fecha +"'";
+					//input = "'" + input.substring(0,5) + "'" + input.substring(5,input.length());
+					//insert = "INSERT INTO Pedido_Historico_Test VALUES('" + fecha + "'," + input +")";
 					statement.executeUpdate(insert);
 					
-				}
+				//}
 				
 			}
 			
