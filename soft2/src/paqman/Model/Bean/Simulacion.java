@@ -3,6 +3,7 @@ package paqman.Model.Bean;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -47,8 +48,9 @@ public class Simulacion {
 
 	public  int inicializarSimulacion(int tiempoAct, int intervaloTiempo, double margenSeguridad,Nodo almacen,int cantAutos,int cantMotos, int vAutos,int vMotos,
 									 int capacidadAutos, int capacidadMotos, double costoKmAutos, double costoKmMotos, double costoHEMoto, double costoHECarro){
-		this.tiempoActual=tiempoAct;
-		this.minutoAcumulado=0;
+		
+		tiempoActual=tiempoAct;
+		minutoAcumulado=0;
 		this.costo=0;
 		this.intervaloTiempo=intervaloTiempo;
 		this.margenSeguridad=margenSeguridad;
@@ -72,6 +74,7 @@ public class Simulacion {
 		this.costoHECarro=costoHECarro;
 		this.idRutas=0;
 		this.idPedidos=0;
+		
 		return 1;
 	}
 
@@ -121,8 +124,8 @@ public class Simulacion {
 		Path myDir = Paths.get(".");
 		Path readFile=myDir.resolve("ArchivoPedidos1.txt");
 		try{
-			String thisLine;
-			BufferedReader br = Files.newBufferedReader(readFile,Charset.forName("UTF-8"));
+			String thisLine=null;
+			BufferedReader br = new BufferedReader(new FileReader("./ArchivoPedidos1.txt"));
 			//int id=0;
 		    while ((thisLine = br.readLine()) != null) {
 		    	System.out.println(thisLine);
@@ -149,6 +152,7 @@ public class Simulacion {
 	}	
 	
 	public  int ejecutarSimulacion(){
+		new Mapa().crearMapa(101, 151);
 		this.inicializarSimulacion(/*tiempoActual*/0,/*intervaloTiempo*/ 2,/*margenSeguridad*/ 5,/*almacen*/ new Nodo (45,30),/*cantAutos*/ 20, /*cantMotos*/40,
 								   /*vAutos*/30,/*vMotos*/ 60, /*capacidadAutos*/25, /*capacidadMotos*/4, /*costoKmAutos*/5, /*costoKmMotos*/3, /*costoHEMoto*/8.0,/*costoHECarro*/12.0);
 		cargarPedidos();

@@ -1,4 +1,5 @@
 package paqman.Model.Bean;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Mapa {
@@ -8,7 +9,8 @@ public class Mapa {
 	public static List<Nodo> grafo;
 	
 	//Mandar filas y columnas +1
-	public int crearMapa(int filas,int columnas){
+	public  int crearMapa(int filas,int columnas){
+		grafo=new ArrayList<Nodo>();
 		if(filas<=0||columnas<=0) return 0;
 		this.filas=filas;
 		this.columnas=columnas;
