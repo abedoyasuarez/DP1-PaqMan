@@ -156,7 +156,7 @@
                     var listaVuelos = [];
                     var listaVuelosCaidos = [];
                     $(document).ready(function(){
-                        cargarAlmacenes();
+                        //cargarAlmacenes();
                         $("#addVuelos").click(function(){
                             if (vuelos < 3){
                             $("#vuelosForm").show("slow");
