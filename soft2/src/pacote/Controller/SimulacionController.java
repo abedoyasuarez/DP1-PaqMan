@@ -163,7 +163,7 @@ public class SimulacionController {
 		simulaDiaADia.ejecutarSimulacion();
 		return 0;
 	}
-    // FIN DIA A DIA
+     // FIN DIA A DIA
      @RequestMapping(value = "/Simulacion/hardcode2", method = RequestMethod.POST)
      public @ResponseBody RetornoSimulacion SilumacionPacote(@RequestBody Simul s) throws Exception {
     	 
