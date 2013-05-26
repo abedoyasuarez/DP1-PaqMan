@@ -5,7 +5,7 @@ public class Mapa {
 	public static int filas;
 	public static int columnas;
 	public static int numNodos;
-	public static List<Nodo> mapa;
+	public static List<Nodo> grafo;
 	
 	//Mandar filas y columnas +1
 	public int crearMapa(int filas,int columnas){
@@ -22,7 +22,7 @@ public class Mapa {
 			int left=((i-1)%this.columnas==0)?-1:i-1;
 			int right=((i+1)%this.columnas==0)?-1:i+1;
 			Nodo nodoInsertar=new Nodo(x,y);
-			mapa.add(nodoInsertar);
+			grafo.add(nodoInsertar);
 		}
 		return 1;
 	}
