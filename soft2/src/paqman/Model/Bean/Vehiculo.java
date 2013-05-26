@@ -232,7 +232,7 @@ public class Vehiculo {
 		
 		int [] camino=Simulacion.BFS(this.getRutaActual().getUltimoNodo(),pedido.getNodoDestino());
 		//List <Nodo> subRuta=construirCamino(this.getRutaActual().getUltimoNodo().getCoorAbs(),camino);
-		this.rutaActual.añadirCamino(this.getRutaActual().getUltimoNodo().getCoorAbs(),camino);
+		this.rutaActual.anhadirCamino(this.getRutaActual().getUltimoNodo().getCoorAbs(),camino);
 		int distancia=camino[(Mapa.filas+1)*(Mapa.columnas+1) +2];
 		this.rutaActual.setDistancia(this.rutaActual.getDistancia()+distancia);
 		if (pedido.getCantidadPaquetes()>this.getCapacidad()-this.getCantidadPaquetes()){
@@ -281,7 +281,7 @@ public class Vehiculo {
 	}
 	public void regresarAlmacen(){
 		int dist=this.rutaActual.getTrayectoria().size();
-		this.rutaActual.añadirCaminoReversa(Simulacion.almacen.getCoorAbs(), Simulacion.patriarca);
+		this.rutaActual.anhadirCaminoReversa(Simulacion.almacen.getCoorAbs(), Simulacion.patriarca);
 		dist=this.rutaActual.getTrayectoria().size()-dist;
 		this.rutaActual.getListaPaquetes().add(new Paquete(0,null,dist,this.rutaActual.getTrayectoria().size()-1));
 		

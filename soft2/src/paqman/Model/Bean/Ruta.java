@@ -38,15 +38,15 @@ public class Ruta {
 		return trayectoria.get(indice);
 	}
 	
-	public void añadirCamino(int nodo,int [] padre){
+	public void anhadirCamino(int nodo,int [] padre){
 		
 		if (padre[nodo]==nodo) return;
-		añadirCamino(padre[nodo],padre);
+		anhadirCamino(padre[nodo],padre);
 		if (padre[nodo]!=nodo)trayectoria.add(new Nodo(nodo%Mapa.columnas,nodo/Mapa.columnas));	
 		
 		
 	}
-	public void añadirCaminoReversa(int nodo,int [] padre){
+	public void anhadirCaminoReversa(int nodo,int [] padre){
 		
 		int flag=0;
 		while(true){
