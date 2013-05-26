@@ -251,7 +251,7 @@ public class SimulacionController {
 				         
 				         
 	         }
-			         
+			         //setamos los campos a analizar 
 			         forecaster.setFieldsToForecast("cantPaquetesT1,cantPaquetesT2,cantPaquetesT3");			         
 			         forecaster.setBaseForecaster(new GaussianProcesses());
 			         
