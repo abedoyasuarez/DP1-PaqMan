@@ -34,7 +34,6 @@ public class DAO_CargaBD extends ConnectBD {
 					
 					input = "'" + input.substring(0,5) + "'" + input.substring(5,input.length());
 					insert = "INSERT INTO Pedido_Historico_Test VALUES('" + fecha + "'," + input +")";
-					System.out.println(insert);
 					statement.executeUpdate(insert);
 					
 				}
