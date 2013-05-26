@@ -1,18 +1,13 @@
 package pacote.Model.DAO;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+import java.io.*;
+import java.sql.*;
 
-public class CargaBD {
+public class DAO_CargaBD extends ConnectBD {
 	
-	private Connection connect = null;
-	private Statement statement = null;
+	private static Statement statement = null;
 	
-	public CargaBD() throws Exception{
+	public void cargarDatos() throws Exception{
 		
 		File directorio = new File("C:/Users/Julio/Downloads/DatosHistoricos"/*path en donde estaran los files*/);
 		File[] archivos = directorio.listFiles();
@@ -20,10 +15,7 @@ public class CargaBD {
 		
 		try{
 			
-			Class.forName("com.mysql.jdbc.Driver");
-			connect = DriverManager.getConnection("jdbc:mysql://quilla.lab.inf.pucp.edu.pe:3306"/*orderdata*/,"inf2260981g5dba","aeronave");
-			statement = connect.createStatement();
-			
+			statement = conexion.conn.createStatement();
 			FileReader reader;
 			BufferedReader br;
 			
@@ -33,14 +25,16 @@ public class CargaBD {
 				br = new BufferedReader(reader);
 				String input = "";
 				String filename = path.getName().toString();
-				String year = filename.substring(3, 7);
+				String year = filename.substring(5, 7);
 				String month = filename.substring(7, 9);
 				String day = filename.substring(9, 11);
 				String fecha = year+"/"+month+"/"+day;
 				
 				while ((input = br.readLine()) != null){
 					
-					insert = "INSERT INTO Pedido_Historico_Test VALUES(" + fecha + "," + input +")";
+					input = "'" + input.substring(0,5) + "'" + input.substring(5,input.length());
+					insert = "INSERT INTO Pedido_Historico_Test VALUES('" + fecha + "'," + input +")";
+					System.out.println(insert);
 					statement.executeUpdate(insert);
 					
 				}
@@ -52,6 +46,6 @@ public class CargaBD {
 			throw e;
 		}
 		
-	}	
+	}
 	
 }
