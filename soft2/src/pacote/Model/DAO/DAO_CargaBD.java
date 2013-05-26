@@ -32,7 +32,7 @@ public class DAO_CargaBD extends ConnectBD {
 				
 				//while ((input = br.readLine()) != null){
 					
-					insert = "LOAD DATA LOCAL INFILE "+ path +" INTO TABLE `inf2260981g5`.`Pedido_Historico_Test_2` FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (hora,coordx,coordy,paquetes,idcliente,prioridad) set fecha = '"+ fecha +"'";
+					insert = "LOAD DATA LOCAL INFILE "+ path +" INTO TABLE `inf2260981g5`.`Pedido_Historico` FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (hora,coordx,coordy,paquetes,idcliente,prioridad) set fecha = '"+ fecha +"'";
 					//input = "'" + input.substring(0,5) + "'" + input.substring(5,input.length());
 					//insert = "INSERT INTO Pedido_Historico_Test VALUES('" + fecha + "'," + input +")";
 					statement.executeUpdate(insert);
