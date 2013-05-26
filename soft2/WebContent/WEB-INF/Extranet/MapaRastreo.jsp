@@ -50,13 +50,16 @@
         switch (flag) { 
    	case 0 :
       	 return "FE7569";
-      	 break 
+      	 break; 
    	case 1 :
          return "66FF00";   
-      	 break 
+      	 break; 
    	case 2 : 
          return "eee";
-      	 break 
+         break; 
+   	case 3 : 
+        return "2113BA";
+      	 break; 
    	default: break;
         } 
     }
@@ -80,15 +83,42 @@
                         success: function(data){
                             if (data.me =="") {*/
                             	pachito = "";
+                            /*var m=0;
+                            var n=0;
+                            var lado=0.01;
+                            var ruta = [];*/
+                            var y=35.962438;
+                            var x=-121.023045; 
+                            var lado=0.01;
                                 //console.log(data);
                                 //google.maps.LatLng(-12.22276,-76.94439)
                                 data={
                                 	    me: "",
                                 	    lRuta:[
-                                	    [{longitud:-76.94439, latitud:-12.22276, paso  : 1, msje :"Msg1"}],
-                                	    [{longitud:-76.94439, latitud:-12.22276, paso  : 0, msje :"Msg2"}],
-                                	    [{longitud:-76.94439, latitud:-12.22276, paso  : 2, msje :"Msg3"}]
-                                	      ]
+                                	    [{longitud:x+lado*70, latitud:y+lado*70, paso  : 0, msje :"Msg1"},
+                                	    {longitud:x+lado*70, latitud:y+lado*74, paso  : 5, msje :"Msg1"},
+                                	    {longitud:x+lado*50, latitud:y+lado*74, paso  : 5, msje :"Msg1"},
+                                	    {longitud:x+lado*50, latitud:y+lado*60, paso  : 3, msje :"Msg1"},
+                                	    {longitud:x+lado*53, latitud:y+lado*60, paso  : 5, msje :"Msg1"},
+                                	    {longitud:x+lado*53, latitud:y+lado*30, paso  : 1, msje :"Msg1"},
+                                	    {longitud:x+lado*33, latitud:y+lado*30, paso  : 4, msje :"Msg1"},
+                                	    {longitud:x+lado*33, latitud:y+lado*80, paso  : 4, msje :"Msg1"},
+                                	    {longitud:x+lado*60, latitud:y+lado*80, paso  : 4, msje :"Msg1"},
+                                	    {longitud:x+lado*60, latitud:y+lado*70, paso  : 3, msje :"Msg1"},
+                                	    {longitud:x+lado*70, latitud:y+lado*70, paso  : 0, msje :"Msg1"}
+                                	      ],
+                                	    [{longitud:x+lado*70, latitud:y+lado*70, paso  : 0, msje :"Msg1"},
+                                   	    {longitud:x+lado*74, latitud:y+lado*70, paso  : 5, msje :"Msg1"},
+                                   	    {longitud:x+lado*74, latitud:y+lado*50, paso  : 5, msje :"Msg1"},
+                                   	    {longitud:x+lado*60, latitud:y+lado*50, paso  : 5, msje :"Msg1"},
+                                   	    {longitud:x+lado*60, latitud:y+lado*53, paso  : 5, msje :"Msg1"},
+                                   	    {longitud:x+lado*30, latitud:y+lado*53, paso  : 2, msje :"Msg1"},
+                                   	 	{longitud:x+lado*30, latitud:y+lado*33, paso  : 4, msje :"Msg1"},
+                                   		{longitud:x+lado*80, latitud:y+lado*33, paso  : 4, msje :"Msg1"},
+                                   		{longitud:x+lado*80, latitud:y+lado*60, paso  : 3, msje :"Msg1"},
+                                   	    {longitud:x+lado*70, latitud:y+lado*60, paso  : 4, msje :"Msg1"},
+                                   	 	{longitud:x+lado*70, latitud:y+lado*70, paso  : 0, msje :"Msg1"}
+                                   	      ]]
 
                                 	  } ;
                                 var arrRuta = new Array();
@@ -122,18 +152,22 @@
                                        //console.log(pintaRuta[j].latitud);
                                        //console.log("Mensaje "+ j + " : " + pintaRuta[j].msje + "</br>");
                                        var bactual = false;
-                                       if (pintaRuta[j].paso == 2) bactual = true;
+                                       if ((pintaRuta[j].paso == 2)||(pintaRuta[j].paso == 1)) bactual = true;
                                        citymap[cont] = {
                                         center: new google.maps.LatLng(pintaRuta[j].latitud,pintaRuta[j].longitud),
                                         color : dameColorGlobo(pintaRuta[j].paso),
+                                        tipo:pintaRuta[j].paso,
+                                        
                                         //mensaje: pintaRuta[j].msje,
                                         mensaje: mensajex,
                                         now : bactual
                                       };
                                       var unaRuta = {
                                              latitud : pintaRuta[j].latitud,
-                                             longitud : pintaRuta[j].longitud
+                                             longitud : pintaRuta[j].longitud,
+                                             paso : pintaRuta[j].paso
                                             };
+                                    
                                       arrRutaMapa[j] = unaRuta; 
                                       cont++;
                                    }
@@ -224,61 +258,161 @@ var citymap = {};
               var x=36.488907;
            	  var y=-119.881592;
               var mapOptions = {
-                zoom: 10,
+                zoom: 13,
                 center: new google.maps.LatLng(x, y),
                 mapTypeId: google.maps.MapTypeId.ROADMAP
               };
               map = new google.maps.Map(document.getElementById("map_canvas"),
                   mapOptions);
-             
-             $.each(rutasMapa, function(i) {
-                 //cada ruta creo una ruta
-                 var r = {};
-                 r = rutasMapa[i];
-                 //console.log(r.length);//bien
-                 var ruta = [];
-                 var m = 0;
-                 while (r[m]){
-                     ruta[m] =  new google.maps.LatLng(r[m].latitud,r[m].longitud);
-                     m++;
-                 }
-                 console.log(m);
-                 /*
-                 
-                 //pruebaaaaaaaaaaaaaaaaaaaaa de rutassssssssssss
-                 
-                 
-                 for (j = 0; j < 2; j++){
-                     ruta[j] =  new google.maps.LatLng(r[j].latitud,r[j].longitud);
-                 }
-              */
-
+              
             //pruebaaaaaaaaaaaaaaaaaaaaa de rutassssssssssss
-            	var m=0;
+           	  var m=0;
               var n=0;
+              var lado=0.01;
               var ruta = [];
-              x=36.043794;
-             
-              y=-120.448761;
+              y=35.962438;
+              x=-121.023045;
+              
               //while(n<100){   
-              while (n<150){
-                     ruta[n] =  new google.maps.LatLng(x+(m*0.01),y+(n*0.03));
+              while (n<((100*2)+2)){
+                    if ((n % 4)==0){
+            	  		ruta[n] =  new google.maps.LatLng(y+((n/2)*lado),x);}
+                    
+                    else if ((n % 4)==1){
+            	  		ruta[n] =  new google.maps.LatLng(y+(((n-1)/2)*lado),x+(150*lado));
+            	  	}
+                    
+                    else if ((n % 4)==2){
+            	  		ruta[n] =  new google.maps.LatLng(y+((n/2)*lado),x+(150*lado));
+            	  	}
+                    
+                    else if ((n % 4)==3){
+            	  		ruta[n] =  new google.maps.LatLng(y+(((n-1)/2)*lado),x);
+            	  	}
                      n++;
               }
+              
+              //console.log(ruta);
+              var lineas = new google.maps.Polyline({
+                        path: ruta,
+                        map: map,
+                        strokeColor: '#FFF978',
+                        strokeWeight: 2.3,
+                        strokeOpacity: 0.7,
+                        clickable: false
+                   });
+              
+              n=0;
+              var ruta2 = [];
+              
+              while (n<((150*2)+2)){
+                  if ((n % 4)==0){
+          	  		ruta2[n] =  new google.maps.LatLng(y,x+((n/2)*lado));}
+                  
+                  else if ((n % 4)==1){
+          	  		ruta2[n] =  new google.maps.LatLng(y+(100*lado),x+(((n-1)/2)*lado));
+          	  	}
+                  
+                  else if ((n % 4)==2){
+          	  		ruta2[n] =  new google.maps.LatLng(y+(100*lado),x+((n/2)*lado));
+          	  	}
+                  
+                  else if ((n % 4)==3){
+          	  		ruta2[n] =  new google.maps.LatLng(y,x+(((n-1)/2)*lado));
+          	  	}
+                   n++;
+            }
               //n++;
                 // }
               
-                 console.log(ruta);
-                 var lineas = new google.maps.Polyline({
-                           path: ruta,
+                 //console.log(ruta);
+                 var lineas2 = new google.maps.Polyline({
+                           path: ruta2,
                            map: map,
-                           strokeColor: '#222000',
-                           strokeWeight: 4,
-                           strokeOpacity: 0.6,
+                           strokeColor: '#FFFF',
+                           strokeWeight: 2.2,
+                           strokeOpacity: 0.7,
                            clickable: false
                       });
+             
+                 function dameColorGlobo2(flag){
+                     switch (flag) { 
+                	case 0 :
+                   	 return "00FFF3";
+                   	 break; 
+                	case 1 :
+                      return "6600FF";   
+                   	 break; 
+                	case 2 : //rojos
+                      return "FF0000";
+                      break; 
+                	case 3 : 
+                     return "FF00FF";
+                   	 break; 
+                	default: break;
+                     } 
+                 }    
+                 
+                 var rantes=0;
+            	 var rdespues=2;
+                 
+             $.each(rutasMapa, function(i) {
+            	 
+           
+
+                 var r = {};
+                 r = rutasMapa[i];
+
+                 //console.log(r.length);//bien
+                 var ruta = [];
+                 var m = 0;
+                 var tem=0;
+                 while (((r[m].paso)!=2)&&((r[m].paso)!=1)){
+                     ruta[m] =  new google.maps.LatLng(r[m].latitud,r[m].longitud);
+                     tem=m;
+                     m++;
+                 }
+                 ruta[m] =  new google.maps.LatLng(r[m].latitud,r[m].longitud);
+                 console.log(m);
+                 
+                 var lineas = new google.maps.Polyline({
+                     path: ruta,
+                     map: map,
+                     strokeColor: dameColorGlobo2(rantes),
+                     strokeWeight: 2,
+                     strokeOpacity: 0.5,
+                     clickable: false
+                
+                 });
+                 
+                 var n=0;
+                 var ruta2 = [];
+                 //ruta2[n] =  new google.maps.LatLng(r[tem].latitud,r[tem].longitud);
+                 //n=1;
+                 
+                 while (r[m]){
+                     ruta2[n] =  new google.maps.LatLng(r[m].latitud,r[m].longitud);
+                     n++;
+                     m++;
+                 }
+                 console.log(m);
+                 var lineas2 = new google.maps.Polyline({
+                     path: ruta2,
+                     map: map,
+                     strokeColor: dameColorGlobo2(rdespues),
+                     strokeWeight: 2,
+                     strokeOpacity: 0.5,
+                     clickable: false
+                
+                 });
+                 
+                 rantes++;
+            	 rdespues++;
+            
 
              });
+             
+             
               /*  
               var ruta = [
               new google.maps.LatLng(-12.039321,-77.07074),
@@ -290,7 +424,7 @@ var citymap = {};
            console.log(citymap);
            for (var city in citymap) {
             
-              var pinColor = citymap[city].color;
+              /*var pinColor = citymap[city].color;
               var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
               new google.maps.Size(21, 34),
               new google.maps.Point(0,0),
@@ -298,19 +432,51 @@ var citymap = {};
               var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
               new google.maps.Size(40, 37),
               new google.maps.Point(0, 0),
-              new google.maps.Point(12, 35));
+              new google.maps.Point(12, 35));*/
                 
-               var marker = new google.maps.Marker({
+               /*var marker = new google.maps.Marker({
                   position: citymap[city].center,
                   map: map,
                   icon: pinImage,
                   shadow: pinShadow
-                });
-
+                });*/
+                var iconBase
+               if (citymap[city].tipo==0){
+                iconBase = '/soft/resources/png/office-building.png';}
+                
+               else if (citymap[city].tipo==1){
+            	   iconBase = '/soft/resources/png/truck3.png';
+               }
+               else if (citymap[city].tipo==2){
+            	   iconBase = '/soft/resources/png/motorcycle.png';
+               }
+               else if (citymap[city].tipo==3){
+            	   iconBase = '/soft/resources/png/home-2.png';
+               }
+               else if (citymap[city].tipo==4){
+            	   iconBase = '';
+               }
+               else if (citymap[city].tipo==5){
+            	   iconBase = '';
+               }
+        	   
+               /*var schoolShadow = {
+                 url: iconBase + 'schools_maps.shadow.png',
+                 anchor: new google.maps.Point(16, 34)
+               };*/
+				if ((citymap[city].tipo!=4)&&(citymap[city].tipo!=5)){
+			
+               var marker = new google.maps.Marker({
+                 position:citymap[city].center,
+                 map: map,
+                 icon: iconBase
+                 //shadow: schoolShadow
+               });
+               
                attachSecretMessage(marker, citymap[city].mensaje);
                if (citymap[city].now)
                 marker.setAnimation(google.maps.Animation.BOUNCE);
-            
+				}
             }
         }
    
