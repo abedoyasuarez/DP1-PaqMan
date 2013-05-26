@@ -244,7 +244,7 @@ public List<SimulaVuelo> dameListaSimulacionVuelo2(int pais_inicio, int pais_fin
 	
 public List<SimulaDia> dameListaSimulacionDia() throws SQLException{
 		
-		String sql = "SELECT fecha, , almacen_longitud, almacen_capacidad, almacen_ciudad FROM dato_historico ";
+		String sql = "SELECT fecha,paquetes_t1, paquetes_t2, paquetes_t3, pedidos_totales FROM Dato_Historico ";
 		PreparedStatement pst;
 		ResultSet rs = null;
 		
