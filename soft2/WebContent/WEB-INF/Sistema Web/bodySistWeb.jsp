@@ -75,7 +75,7 @@
 									<li><a tabindex="-1" href="/soft/reporte3">Estadisticas anuales</a></li>
 									<li><a tabindex="-1" href="/soft/gerente/simular">Simulacion</a></li>
 									<li><a tabindex="-1" href="/soft/diadia/simularDiaDia">Dia - Dia</a></li>
-								</ul>
+								 </ul>
 							</li>				
 						</ul>						
 					</li>
