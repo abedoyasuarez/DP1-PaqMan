@@ -32,6 +32,7 @@ import pacote.Model.DAO.Conexion;
 import pacote.Model.DAO.DAO_Almacen;
 import pacote.Model.DAO.DAO_Vuelo_Padre;
 import pacote.Model.Facade.SimulacionFacade;
+import pacote.Model.Service.CargaBDService;
 import pacote.Model.Service.SimulaService;
 import paqman.Model.Bean.Simulacion;
 
@@ -173,7 +174,15 @@ public class SimulacionController {
     	 
     	 int numUT = Integer.parseInt(s.ff);		
     	 List<AlmacenesSimula> almacenesSim = s.listaAlmacenes; 
-    	     	 
+    	 //carga de archivos
+    	 CargaBDService cargaService = new CargaBDService();
+    	 System.out.println("CARGA DE ARCHIVOS");
+    	 long startime= System.currentTimeMillis();
+    	 cargaService.buscaDataSimulacionDia();
+    	 long endtime=System.currentTimeMillis();
+    	 long total=endtime-startime;
+    	 System.out.println("FIN DE ARCHIVOS tiempo: "+total);
+    	 //fin de carga de archivo
     	 System.out.println("Inicia Simulacion");
     	 try{
     	 
@@ -203,15 +212,25 @@ public class SimulacionController {
 	         WekaForecaster forecaster = new WekaForecaster();
 	    	 
 	    	 Attribute atcantPaquetesT1 = new Attribute("cantPaquetesT1");
+	    	 Attribute atprioridadT1 = new Attribute("prioridadT1");
 	    	 Attribute atcantPaquetesT2 = new Attribute("cantPaquetesT2");
+	    	 Attribute atprioridadT2 = new Attribute("prioridadT2");
 	    	 Attribute atcantPaquetesT3 = new Attribute("cantPaquetesT3");
+	    	 Attribute atprioridadT3 = new Attribute("prioridadT3");
 	    	 Attribute atFecha = new Attribute("Fecha", "dd-MM-yyyy");
 	         
 	         FastVector atributos = new FastVector();
 	         
+	         //turno 1 (0-8)
 	         atributos.addElement(atcantPaquetesT1);
+	         atributos.addElement(atprioridadT1);
+	         //turno 2 (8-16)
 	         atributos.addElement(atcantPaquetesT2);
+	         atributos.addElement(atprioridadT2);
+	         //turno 3 (16-24)
 	         atributos.addElement(atcantPaquetesT3);
+	         atributos.addElement(atprioridadT3);
+	         //fecha
 	         atributos.addElement(atFecha);
 	         
 	         Instances dataset = new Instances("dataset_simulacion", atributos, 0);	
