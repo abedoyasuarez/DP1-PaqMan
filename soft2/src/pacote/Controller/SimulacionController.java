@@ -20,7 +20,7 @@ import pacote.Model.Bean.Simul;
 import pacote.Model.Bean.SimulaAlmacen;
 import pacote.Model.Bean.SimulaDataAlmacen;
 import pacote.Model.Bean.SimulaDataVuelo;
-//import pacote.Model.Bean.SimulaDia;
+import pacote.Model.Bean.SimulaDia;
 import pacote.Model.Bean.SimulaVuelo;
 import pacote.Model.Bean.VueloCaida;
 import pacote.Model.Bean.Vuelo_Padre;
@@ -171,7 +171,7 @@ public class SimulacionController {
     	 
     	 rpta.me = "";
     	 
-    	 /*int numUT = Integer.parseInt(s.ff);		
+    	 int numUT = Integer.parseInt(s.ff);		
     	 List<AlmacenesSimula> almacenesSim = s.listaAlmacenes; 
     	     	 
     	 System.out.println("Inicia Simulacion");
@@ -252,13 +252,7 @@ public class SimulacionController {
 				         
 	         }
 			         
-			         forecaster.setFieldsToForecast("cantPaquetesT1");
-			         forecaster.setBaseForecaster(new GaussianProcesses());
-			         
-			         forecaster.setFieldsToForecast("cantPaquetesT2");
-			         forecaster.setBaseForecaster(new GaussianProcesses());
-			         
-			         forecaster.setFieldsToForecast("cantPaquetesT3");
+			         forecaster.setFieldsToForecast("cantPaquetesT1,cantPaquetesT2,cantPaquetesT3");			         
 			         forecaster.setBaseForecaster(new GaussianProcesses());
 			         
 			         
@@ -337,7 +331,7 @@ public class SimulacionController {
 	        	 System.out.println("****Impresion Lista*****");
  	        	 
 	        	 System.out.println("Vuelo: " + listaVuelos.get(i).vuelo_id);
-	        	 System.out.println("Tama�o: " + listaSimulaData.size());
+	        	 System.out.println("Tama���o: " + listaSimulaData.size());
 	        	 	        	 
 	        	 int caido = 0;
 	        	 
@@ -431,12 +425,12 @@ public class SimulacionController {
 	         //Fin vuelos
 	*/                  
 	         
-    	 /*}
+    	 }
 	     catch(Exception e){
 	    	 rpta.me = "Error :(";
 	    	 e.printStackTrace();
 	    	 System.out.println("CATCH");
-	     }*/
+	     }
          
          
     	 return rpta;
