@@ -469,16 +469,16 @@
                                             console.log(data);
                                             //pintamos el primero Fecha actual
                                             if (objListaBubu.length > 0){
-                                            var actual = objListaBubu[0];
-                                            //console.log(actual);
-                                            var i = 0;
-                                            var arrAlmacenes = actual.almacenes;
-                                            var arrVuelos = actual.vuelos;
-                                            listaVuelosCaidos = data.listaCaidosVuelos;
-                                            //console.log(arrAlmacenes);
-                                            llenaAlmacenes(arrAlmacenes);
-                                            //console.log(almacenes);
-                                            localStorage.setItem("actualAlmacenIndice",0);
+	                                            var actual = objListaBubu[0];
+	                                            //console.log(actual);
+	                                            var i = 0;
+	                                            var arrAlmacenes = actual.almacenes;
+	                                            var arrVuelos = actual.vuelos;
+	                                            listaVuelosCaidos = data.listaCaidosVuelos;
+	                                            //console.log(arrAlmacenes);
+	                                            llenaAlmacenes(arrAlmacenes);
+	                                            //console.log(almacenes);
+	                                            localStorage.setItem("actualAlmacenIndice",0);
                                             
                                             }
                                             $("#controles").show("slow");

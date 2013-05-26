@@ -20,7 +20,7 @@ import pacote.Model.Bean.Simul;
 import pacote.Model.Bean.SimulaAlmacen;
 import pacote.Model.Bean.SimulaDataAlmacen;
 import pacote.Model.Bean.SimulaDataVuelo;
-//import pacote.Model.Bean.SimulaDia;
+import pacote.Model.Bean.SimulaDia;
 import pacote.Model.Bean.SimulaVuelo;
 import pacote.Model.Bean.VueloCaida;
 import pacote.Model.Bean.Vuelo_Padre;
@@ -32,6 +32,7 @@ import pacote.Model.DAO.Conexion;
 import pacote.Model.DAO.DAO_Almacen;
 import pacote.Model.DAO.DAO_Vuelo_Padre;
 import pacote.Model.Facade.SimulacionFacade;
+import pacote.Model.Service.CargaBDService;
 import pacote.Model.Service.SimulaService;
 import paqman.Model.Bean.Simulacion;
 
@@ -171,9 +172,17 @@ public class SimulacionController {
     	 
     	 rpta.me = "";
     	 
-    	 /*int numUT = Integer.parseInt(s.ff);		
+    	 int numUT = Integer.parseInt(s.ff);		
     	 List<AlmacenesSimula> almacenesSim = s.listaAlmacenes; 
-    	     	 
+    	 //carga de archivos
+    	 CargaBDService cargaService = new CargaBDService();
+    	 System.out.println("CARGA DE ARCHIVOS");
+    	 long startime= System.currentTimeMillis();
+    	 cargaService.buscaDataSimulacionDia();
+    	 long endtime=System.currentTimeMillis();
+    	 long total=endtime-startime;
+    	 System.out.println("FIN DE ARCHIVOS tiempo: "+total);
+    	 //fin de carga de archivo
     	 System.out.println("Inicia Simulacion");
     	 try{
     	 
@@ -203,15 +212,25 @@ public class SimulacionController {
 	         WekaForecaster forecaster = new WekaForecaster();
 	    	 
 	    	 Attribute atcantPaquetesT1 = new Attribute("cantPaquetesT1");
+	    	 Attribute atprioridadT1 = new Attribute("prioridadT1");
 	    	 Attribute atcantPaquetesT2 = new Attribute("cantPaquetesT2");
+	    	 Attribute atprioridadT2 = new Attribute("prioridadT2");
 	    	 Attribute atcantPaquetesT3 = new Attribute("cantPaquetesT3");
+	    	 Attribute atprioridadT3 = new Attribute("prioridadT3");
 	    	 Attribute atFecha = new Attribute("Fecha", "dd-MM-yyyy");
 	         
 	         FastVector atributos = new FastVector();
 	         
+	         //turno 1 (0-8)
 	         atributos.addElement(atcantPaquetesT1);
+	         atributos.addElement(atprioridadT1);
+	         //turno 2 (8-16)
 	         atributos.addElement(atcantPaquetesT2);
+	         atributos.addElement(atprioridadT2);
+	         //turno 3 (16-24)
 	         atributos.addElement(atcantPaquetesT3);
+	         atributos.addElement(atprioridadT3);
+	         //fecha
 	         atributos.addElement(atFecha);
 	         
 	         Instances dataset = new Instances("dataset_simulacion", atributos, 0);	
@@ -251,14 +270,8 @@ public class SimulacionController {
 				         
 				         
 	         }
-			         
-			         forecaster.setFieldsToForecast("cantPaquetesT1");
-			         forecaster.setBaseForecaster(new GaussianProcesses());
-			         
-			         forecaster.setFieldsToForecast("cantPaquetesT2");
-			         forecaster.setBaseForecaster(new GaussianProcesses());
-			         
-			         forecaster.setFieldsToForecast("cantPaquetesT3");
+			         //setamos los campos a analizar 
+			         forecaster.setFieldsToForecast("cantPaquetesT1,cantPaquetesT2,cantPaquetesT3");			         
 			         forecaster.setBaseForecaster(new GaussianProcesses());
 			         
 			         
@@ -337,7 +350,7 @@ public class SimulacionController {
 	        	 System.out.println("****Impresion Lista*****");
  	        	 
 	        	 System.out.println("Vuelo: " + listaVuelos.get(i).vuelo_id);
-	        	 System.out.println("Tama�o: " + listaSimulaData.size());
+	        	 System.out.println("Tama���o: " + listaSimulaData.size());
 	        	 	        	 
 	        	 int caido = 0;
 	        	 
@@ -431,12 +444,12 @@ public class SimulacionController {
 	         //Fin vuelos
 	*/                  
 	         
-    	 /*}
+    	 }
 	     catch(Exception e){
 	    	 rpta.me = "Error :(";
 	    	 e.printStackTrace();
 	    	 System.out.println("CATCH");
-	     }*/
+	     }
          
          
     	 return rpta;
