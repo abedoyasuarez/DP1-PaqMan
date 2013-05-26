@@ -64,7 +64,7 @@
    
   if (localStorage.getItem("idEnvio") == null){
       $(location).attr("href","../");
-  }else {
+  }else { 
       /*var data = {
                                     id : localStorage.getItem("idEnvio")		
                  };
@@ -85,9 +85,9 @@
                                 data={
                                 	    me: "",
                                 	    lRuta:[
-                                	    [{longitud:-76.94439, latitud:-12.22276, paso  : 1, msje :"HOLA"}],
-                                	    [{longitud:-76.94439, latitud:-12.22276, paso  : 0, msje :"CHAU"}],
-                                	    [{longitud:-76.94439, latitud:-12.22276, paso  : 2, msje :"PEDON"}]
+                                	    [{longitud:-76.94439, latitud:-12.22276, paso  : 1, msje :"Msg1"}],
+                                	    [{longitud:-76.94439, latitud:-12.22276, paso  : 0, msje :"Msg2"}],
+                                	    [{longitud:-76.94439, latitud:-12.22276, paso  : 2, msje :"Msg3"}]
                                 	      ]
 
                                 	  } ;
