@@ -244,14 +244,20 @@ public List<SimulaVuelo> dameListaSimulacionVuelo2(int pais_inicio, int pais_fin
 	
 public List<SimulaDia> dameListaSimulacionDia() throws SQLException{
 		
-		String sql = "SELECT fecha,paquetes_t1, paquetes_t2, paquetes_t3, pedidos_totales FROM Dato_Historico ";
+		String sql = "SELECT COUNT(*) FROM (SELECT DISTINCT (Fecha) FROM Pedido_Historico)";
+		//String sql = "SELECT fecha,paquetes_t1, paquetes_t2, paquetes_t3, pedidos_totales FROM Dato_Historico ";
 		PreparedStatement pst;
 		ResultSet rs = null;
 		
 		pst= conexion.conn.prepareStatement(sql);
  	    pst.execute();
-		
  	    rs = pst.getResultSet();
+ 	    
+ 	    while(rs.next()){
+ 	    	int numdias = rs.getInt(1);
+ 	    }
+ 	    
+ 	    String sql2 = "SELECT fecha, SUM(paquetes) FROM Pedido_Historico";
 
 		List<SimulaDia> listaDia = new ArrayList<SimulaDia>();
 		while(rs.next()){
