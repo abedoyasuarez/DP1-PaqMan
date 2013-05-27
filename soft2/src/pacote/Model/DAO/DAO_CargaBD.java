@@ -36,21 +36,23 @@ public class DAO_CargaBD extends ConnectBD {
 				String month = filename.substring(7, 9);
 				String day = filename.substring(9, 11);
 				String fecha = year+"/"+month+"/"+day;
+
+				String separador = System.getProperty("file.separator");
 				
 				//while ((input = br.readLine()) != null){
 					
-					String ruta = path.getAbsolutePath().toString();
+					String ruta = path.getPath().toString();
 					//System.out.println(ruta);
-					//ruta.replace("\\", "/");
+					ruta=ruta.replace(separador, "/");
 					//String[] arrayRuta = ruta.split(Character.toString((char)92));
 				 
 					//for (int i = 0; i < arrayRuta.length; i++) {
 						//System.out.println(arrayRuta[i]);
 					//}
 				
-					System.out.println(ruta);
+					//System.out.println(ruta);
 					insert = "LOAD DATA LOCAL INFILE '"+ ruta +"' INTO TABLE `inf2260981g5`.`Pedido_Historico` FIELDS TERMINATED BY ',' LINES TERMINATED BY '\\n' (hora,coordx,coordy,paquetes,idcliente,prioridad) set fecha = '"+ fecha +"'";
-					System.out.println(insert);
+					//System.out.println(insert);
 					//input = "'" + input.substring(0,5) + "'" + input.substring(5,input.length());
 					//insert = "INSERT INTO Pedido_Historico_Test VALUES('" + fecha + "'," + input +")";
 					statement.executeUpdate(insert);
