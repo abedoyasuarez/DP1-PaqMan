@@ -175,14 +175,14 @@ public class SimulacionController {
     	 int numUT = Integer.parseInt(s.ff);		
     	 List<AlmacenesSimula> almacenesSim = s.listaAlmacenes; 
     	 //carga de archivos
-    	 CargaBDService cargaService = new CargaBDService();
+    	 /*CargaBDService cargaService = new CargaBDService();
     	 System.out.println("CARGA DE ARCHIVOS");
     	 long startime= System.currentTimeMillis();
     	 cargaService.buscaDataSimulacionDia();
     	 long endtime=System.currentTimeMillis();
     	 long total=endtime-startime;
     	 System.out.println("FIN DE ARCHIVOS tiempo: "+total);
-    	 //fin de carga de archivo
+    	 //fin de carga de archivo*/
     	 System.out.println("Inicia Simulacion");
     	 try{
     	 
@@ -212,24 +212,24 @@ public class SimulacionController {
 	         WekaForecaster forecaster = new WekaForecaster();
 	    	 
 	    	 Attribute atcantPaquetesT1 = new Attribute("cantPaquetesT1");
-	    	 Attribute atprioridadT1 = new Attribute("prioridadT1");
+	    	 //Attribute atprioridadT1 = new Attribute("prioridadT1");
 	    	 Attribute atcantPaquetesT2 = new Attribute("cantPaquetesT2");
-	    	 Attribute atprioridadT2 = new Attribute("prioridadT2");
+	    	 //Attribute atprioridadT2 = new Attribute("prioridadT2");
 	    	 Attribute atcantPaquetesT3 = new Attribute("cantPaquetesT3");
-	    	 Attribute atprioridadT3 = new Attribute("prioridadT3");
+	    	 //Attribute atprioridadT3 = new Attribute("prioridadT3");
 	    	 Attribute atFecha = new Attribute("Fecha", "dd-MM-yyyy");
 	         
 	         FastVector atributos = new FastVector();
 	         
 	         //turno 1 (0-8)
 	         atributos.addElement(atcantPaquetesT1);
-	         atributos.addElement(atprioridadT1);
+	         //atributos.addElement(atprioridadT1);
 	         //turno 2 (8-16)
 	         atributos.addElement(atcantPaquetesT2);
-	         atributos.addElement(atprioridadT2);
+	         //atributos.addElement(atprioridadT2);
 	         //turno 3 (16-24)
 	         atributos.addElement(atcantPaquetesT3);
-	         atributos.addElement(atprioridadT3);
+	         //atributos.addElement(atprioridadT3);
 	         //fecha
 	         atributos.addElement(atFecha);
 	         
@@ -266,7 +266,7 @@ public class SimulacionController {
 			        	 attValues[3]= dataset.attribute(3).parseDate(fecha);
 				         dataset.add(new DenseInstance(1.0, attValues));
 				         
-				         System.out.println("****Fin Lista*****");
+				         System.out.println("****Fin Dias*****");
 				         
 				         
 	         }
@@ -287,6 +287,7 @@ public class SimulacionController {
 			         
 			         List<List<NumericPrediction>> forecast = forecaster.forecast(numUT, System.out);
 			         
+			         System.out.println("****resultado de weka*****");
 			         for(int w = 0;w < numUT; w++){
 			        	 List<NumericPrediction> predsAtStep = forecast.get(w);
 			        	 
@@ -295,6 +296,7 @@ public class SimulacionController {
 			        	 NumericPrediction predForTarget = predsAtStep.get(0);
 				         System.out.println(w + ": " + predForTarget.predicted() + " ;");
 				         rpta.listaSim.get(w).paquetes_T1=(int)predForTarget.predicted();
+				         
 				         
 				         predForTarget = predsAtStep.get(1);
 				         System.out.println(w + ": " + predForTarget.predicted() + " ;");
