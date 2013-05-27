@@ -35,7 +35,7 @@ public class Ruta {
 		int indice=trayectoria.size();
 		if (indice==0)return null;
 		
-		return trayectoria.get(indice);
+		return trayectoria.get(indice-1);
 	}
 	
 	public void anhadirCamino(int nodo,int [] padre){

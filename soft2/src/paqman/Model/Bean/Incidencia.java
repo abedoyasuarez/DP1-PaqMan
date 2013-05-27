@@ -19,7 +19,7 @@ public class Incidencia {
 	public int getIdPedido() {
 		return idPedido;
 	}
-	public void setIdPedido(int idPedido) {
+	public void setIdPedido(int idPedido) {		
 		this.idPedido = idPedido;
 	}
 	

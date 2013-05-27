@@ -16,8 +16,8 @@ public class Nodo {
 		this.coorY = coorY;
 		this.coorAbs = coorY*Mapa.columnas+coorX;
 		this.up=(coorAbs+Mapa.columnas>=Mapa.columnas*Mapa.filas)?-1:coorAbs+Mapa.columnas;
-		this.down=(coorAbs-Mapa.columnas<0)?-1:coorAbs-Mapa.columnas;;
-		this.left=((coorAbs-1)%Mapa.columnas==0)?-1:coorAbs-1;
+		this.down=(coorAbs-Mapa.columnas<0)?-1:coorAbs-Mapa.columnas;
+		this.left=((coorAbs)%Mapa.columnas==0)?-1:coorAbs-1;
 		this.right=((coorAbs+1)%Mapa.columnas==0)?-1:coorAbs+1;
 	}
 

@@ -46,8 +46,9 @@ public class Simulacion {
 	public static int indiceIncidenciaInicial;
 	public static int indicePedidoConIncidenciaInicial;
 
-	public  int inicializarSimulacion(int tiempoAct, int intervaloTiempo, double margenSeguridad,Nodo almacen,int cantAutos,int cantMotos, int vAutos,int vMotos,
-									 int capacidadAutos, int capacidadMotos, double costoKmAutos, double costoKmMotos, double costoHEMoto, double costoHECarro){
+	public  int inicializarSimulacion(int tiempoAct, int intervaloTiempo, double margenSeguridad,Nodo almacen,
+									  int cantidadAutos,int cantidadMotos, int vAutos,int vMotos,
+									  int capacidadAutos, int capacidadMotos, double costoKmAutos, double costoKmMotos, double costoHEMoto, double costoHECarro){
 		
 		tiempoActual=tiempoAct;
 		minutoAcumulado=0;
@@ -59,7 +60,7 @@ public class Simulacion {
 		this.listaPedidos=new ArrayList<Pedido>();
 		this.listaIncidencias=new ArrayList<Incidencia>();
 		this.indicePedidoInicial=0;
-		this.indicePedidoFinal=0;
+		this.indicePedidoFinal=-1;
 		this.indiceIncidenciaInicial=0;
 		this.indicePedidoConIncidenciaInicial=0;
 		this.cantidadAutos=cantidadAutos;
@@ -96,10 +97,10 @@ public class Simulacion {
 	
 	public  static int cargarIncidencia(){
 		Path myDir = Paths.get(".");
-		Path readFile=myDir.resolve("ArchivoIncidencias1.txt");
+		Path readFile=myDir.resolve("C:\\Users\\Diego\\Documents\\GitHub\\DP1-PaqMan\\soft2\\src\\paqman\\Model\\Bean\\ArchivoIncidencias1.txt");
 		try{
 			String thisLine;
-			BufferedReader br = Files.newBufferedReader(readFile,Charset.forName("UTF-8"));
+			BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Diego\\Documents\\GitHub\\DP1-PaqMan\\soft2\\src\\paqman\\Model\\Bean\\ArchivoIncidencias1.txt"));
 		    while ((thisLine = br.readLine()) != null) {
 		    	System.out.println(thisLine);
 		    	String[] splitDatosIncidencia=thisLine.split(" ");
@@ -121,11 +122,10 @@ public class Simulacion {
 	
 
 	public  static int cargarPedidos(){
-		Path myDir = Paths.get(".");
-		Path readFile=myDir.resolve("ArchivoPedidos1.txt");
+
 		try{
 			String thisLine=null;
-			BufferedReader br = new BufferedReader(new FileReader("./ArchivoPedidos1.txt"));
+			BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Diego\\Documents\\GitHub\\DP1-PaqMan\\soft2\\src\\paqman\\Model\\Bean\\ArchivoPedidos2.txt"));
 			//int id=0;
 		    while ((thisLine = br.readLine()) != null) {
 		    	System.out.println(thisLine);
@@ -152,15 +152,23 @@ public class Simulacion {
 	}	
 	
 	public  int ejecutarSimulacion(){
-		new Mapa().crearMapa(101, 151);
-		this.inicializarSimulacion(/*tiempoActual*/0,/*intervaloTiempo*/ 2,/*margenSeguridad*/ 5,/*almacen*/ new Nodo (45,30),/*cantAutos*/ 20, /*cantMotos*/40,
+		new Mapa().crearMapa(10, 10);
+		this.inicializarSimulacion(/*tiempoActual*/0,/*intervaloTiempo*/ 2,/*margenSeguridad*/ 5,/*almacen*/ new Nodo (5,5),/*cantAutos*/ 20, /*cantMotos*/40,
 								   /*vAutos*/30,/*vMotos*/ 60, /*capacidadAutos*/25, /*capacidadMotos*/4, /*costoKmAutos*/5, /*costoKmMotos*/3, /*costoHEMoto*/8.0,/*costoHECarro*/12.0);
 		cargarPedidos();
-		cargarIncidencia();
+		//cargarIncidencia();
+		Mapa.imrimeMapa();
 		patriarca=BFS(almacen,new Nodo(2000000,2000000));
 		Respuesta respuesta=new Respuesta();
-		while(respuesta.planificarRespuesta()==1);
-		System.out.printf("El costo Total es: %lf \n",Simulacion.costo);
+		respuesta.inicializarRespuesta();
+		while(respuesta.planificarRespuesta()==1){
+			minutoAcumulado+=intervaloTiempo;
+			respuesta.modificarRespuesta();
+			respuesta.imprimirRespuesta();
+			System.out.println("El costo acumulado: " + Simulacion.costo);
+			
+		}
+		System.out.println("El costo Total: " + Simulacion.costo);
 		return 1;
 	}
 	
@@ -183,8 +191,8 @@ public class Simulacion {
 		boolean [] visitado=new boolean [(Mapa.filas+1)*(Mapa.columnas+1) +1];
 		
 		Queue <Pair<Nodo,Integer> >q = new LinkedList<Pair<Nodo,Integer>>(); 
-		visitado[nodoInicio.getCoorAbs()]=true;
 		for( int i=0 ; i < (Mapa.filas+1)*(Mapa.columnas+1) +1 ; i++ )visitado[i]=false;
+		visitado[nodoInicio.getCoorAbs()]=true;
 		padre[nodoInicio.getCoorAbs()]=nodoInicio.getCoorAbs();
 		q.add(new Pair(nodoInicio,0));
 		padre[(Mapa.filas+1)*(Mapa.columnas+1) +2]=2000000;
@@ -197,6 +205,7 @@ public class Simulacion {
 					padre[(Mapa.filas+1)*(Mapa.columnas+1) +2]=dist;
 					return padre;
 			}
+	
 			dir[0]=Mapa.grafo.get(u.getCoorAbs()).up;
 			dir[1]=Mapa.grafo.get(u.getCoorAbs()).left;
 			dir[2]=Mapa.grafo.get(u.getCoorAbs()).down;
@@ -206,7 +215,7 @@ public class Simulacion {
 				if(dir[i]!=-1 && !visitado[dir[i]]){
 					visitado[dir[i]]=true;
 					padre[dir[i]]=u.getCoorAbs();
-					q.add(new Pair(Mapa.grafo.get(dir[i]),dist+1));					
+					q.offer(new Pair(Mapa.grafo.get(dir[i]),dist+1));					
 				}
 				
 			}

@@ -11,7 +11,7 @@ public class Respuesta {
 	private List<Vehiculo> futuraListaAutos;
 	
 	public int inicializarRespuesta(){
-		
+		futuraListaMotos=new ArrayList<Vehiculo>();
 		listaMotos=new ArrayList<Vehiculo>();
 		for (int i=0;i< Simulacion.cantidadMotos;i++){
 				Vehiculo moto=new Vehiculo();
@@ -22,6 +22,7 @@ public class Respuesta {
 				futuraListaMotos.add(futuraMoto);
 				
 		}
+		futuraListaAutos=new ArrayList<Vehiculo>();
 		listaAutos=new ArrayList<Vehiculo>();
 		for (int i=0;i< Simulacion.cantidadAutos;i++){
 				Vehiculo auto=new Vehiculo();
@@ -154,14 +155,14 @@ public class Respuesta {
 	private int solucion(){
 //		aguanta tu coche
 		int limite=0;
-		for(int i=Simulacion.indicePedidoFinal+1;i<Simulacion.listaPedidos.size();i++){
-			
+		for(int i=Simulacion.indicePedidoFinal+1;i<Simulacion.listaPedidos.size();i++){			
 			Pedido pedido=Simulacion.listaPedidos.get(i);
 			if(/*Simulacion.hastaIntervalo(pedido)*/ pedido.getMinutoLlegada()>Simulacion.minutoAcumulado+Simulacion.intervaloTiempo){
-				limite++;
-			} else break;
+				break;
+			} else limite++;
 		}
-		Simulacion.indicePedidoFinal+=limite;
+		Simulacion.indicePedidoFinal+=(Simulacion.indicePedidoFinal==-1&&limite==0)?1:limite;
+		if (Simulacion.indicePedidoInicial>Simulacion.indicePedidoFinal)return 0;
 		Collections.sort(Simulacion.listaPedidos.subList(Simulacion.indicePedidoInicial,Simulacion.indicePedidoFinal),new pedidosComparator());
 		Collections.sort(this.listaMotos,new vehiculoComparator());
 		Collections.sort(this.listaAutos,new vehiculoComparator());
@@ -180,7 +181,7 @@ public class Respuesta {
 	}
 	public int planificarRespuesta(){
 		//planificar la respuesta en base a pedidos leidos
-		if(Simulacion.listaPedidos.size()==0||Simulacion.tiempoActual==4320 || Simulacion.indicePedidoInicial>Simulacion.indicePedidoFinal){
+		if(Simulacion.listaPedidos.size()==0||Simulacion.tiempoActual==4320 || (Simulacion.indicePedidoInicial>=Simulacion.listaPedidos.size())){
 			return 0; //se acabó
 		}
 		solucion();
@@ -296,6 +297,29 @@ public class Respuesta {
 		
 	
 		return 1;
+	}
+	
+	public int imprimirRespuesta() {
+		System.out.println("PLANIFICACION RESPUESTA");
+		for(Vehiculo auto:this.listaAutos){
+			System.out.println("AUTO "+auto.getId()+":");
+			System.out.print("Trayectoria: ");
+			for(Nodo nodo:auto.getRutaActual().getTrayectoria()){
+				System.out.print(nodo.coorAbs+" ");
+			}			
+			System.out.print("Estado: "+auto.getEstado());
+			System.out.println();
+		}
+		for(Vehiculo moto:this.listaMotos){
+			System.out.print("MOTO: "+moto.getId()+":");
+			System.out.print("Trayectoria: ");
+			for(Nodo nodo:moto.getRutaActual().getTrayectoria()){
+				System.out.print(nodo.coorAbs+" ");
+			}
+			System.out.print("Estado: "+moto.getEstado());
+			System.out.println();			
+		}
+		return 0;
 	}
 	
 }

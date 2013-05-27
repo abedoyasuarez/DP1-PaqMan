@@ -59,7 +59,7 @@ public class Vehiculo {
 			this.costoHE=Simulacion.costoHECarro;
 			
 		}
-		this.saltoDistancia=60.0/(this.velocidad*1.0);
+		this.saltoDistancia=(60.0/(this.velocidad*1.0))*Simulacion.intervaloTiempo;
 		
 	}
 	
@@ -196,7 +196,7 @@ public class Vehiculo {
 					posicionRelativa=0;
 					estado=1;
 					estadoAnterior=1;
-					this.rutaActual.setMinutoSalidaAlmacen(Simulacion.minutoAcumulado);
+					this.rutaActual.setMinutoSalidaAlmacen(Simulacion.minutoAcumulado+Simulacion.intervaloTiempo);//+intervalo tiempo
 					for(Paquete paquete:this.rutaActual.getListaPaquetes()){
 						paquete.setEstado(1);
 					}
@@ -216,6 +216,7 @@ public class Vehiculo {
 		
 		if (cantidadPaquetes==capacidad) return false;
 		Nodo ultimoNodo=rutaActual.getUltimoNodo();
+		if (ultimoNodo==null) return false;
 		int dist=pseudoDistancia(ultimoNodo,pedido.getNodoDestino());
 		if (rutaActual.getTrayectoria().size()==1) return true;
 		if (dist>pseudoDistancia(ultimoNodo,Simulacion.almacen))return false;
@@ -232,14 +233,15 @@ public class Vehiculo {
 		
 		int [] camino=Simulacion.BFS(this.getRutaActual().getUltimoNodo(),pedido.getNodoDestino());
 		//List <Nodo> subRuta=construirCamino(this.getRutaActual().getUltimoNodo().getCoorAbs(),camino);
-		this.rutaActual.anhadirCamino(this.getRutaActual().getUltimoNodo().getCoorAbs(),camino);
+		//this.rutaActual.anhadirCamino(this.getRutaActual().getUltimoNodo().getCoorAbs(),camino);
+		this.rutaActual.anhadirCamino(pedido.getNodoDestino().getCoorAbs(),camino);
+		
 		int distancia=camino[(Mapa.filas+1)*(Mapa.columnas+1) +2];
 		this.rutaActual.setDistancia(this.rutaActual.getDistancia()+distancia);
 		if (pedido.getCantidadPaquetes()>this.getCapacidad()-this.getCantidadPaquetes()){
 			this.rutaActual.getListaPaquetes().add(new Paquete(this.capacidad-this.cantidadPaquetes,pedido,distancia,this.rutaActual.getTrayectoria().size()-1));
-			
+			pedido.setCantidadPaquetes(pedido.getCantidadPaquetes()-(this.capacidad-this.cantidadPaquetes));			
 			this.setCantidadPaquetes(this.capacidad);
-			pedido.setCantidadPaquetes(this.capacidad-this.cantidadPaquetes);
 			
 		}
 		else{
@@ -259,7 +261,7 @@ public class Vehiculo {
 		if (this.rutaActual.getTrayectoria().size()==1)return false;
 		if (this.cantidadPaquetes==this.capacidad) return true;	
 		double tiempoIda=((this.rutaActual.getTrayectoria().size()-1)*1.0/this.velocidad)*60.0;
-		int numeroClientes=this.rutaActual.getListaPaquetes().size();
+		int numeroClientes=this.rutaActual.getListaPaquetes().size()-1;
 		int posX=this.rutaActual.getUltimoNodo().getCoorX();
 		int posY=this.rutaActual.getUltimoNodo().getCoorY();
 		int dist=pseudoDistancia(new Nodo(posX,posY), Simulacion.almacen);
@@ -268,6 +270,7 @@ public class Vehiculo {
 		if (tiempoIda+tiempoRegreso>tiempoRestante-60.0) return true;
 		for (Paquete paquete:this.rutaActual.getListaPaquetes()){
 			Pedido pedido=paquete.getPedido();
+			if (pedido==null) continue;
 			if (pedido.getNodoDestino().coorAbs==Simulacion.almacen.getCoorAbs())continue;
 			if (paquete.getDistancia()/this.velocidad>=paquete.getPedido().getMinutoLlegada()+paquete.getPedido().getTiempoEntrega()-Simulacion.minutoAcumulado+Simulacion.margenSeguridad){
 				return true;
@@ -280,8 +283,10 @@ public class Vehiculo {
 		
 	}
 	public void regresarAlmacen(){
-		int dist=this.rutaActual.getTrayectoria().size();
-		this.rutaActual.anhadirCaminoReversa(Simulacion.almacen.getCoorAbs(), Simulacion.patriarca);
+		int dist=this.rutaActual.getTrayectoria().size();//Restar uno.
+//		this.rutaActual.anhadirCaminoReversa(Simulacion.almacen.getCoorAbs(), Simulacion.patriarca);
+		this.rutaActual.anhadirCaminoReversa(this.rutaActual.getUltimoNodo().getCoorAbs(), Simulacion.patriarca);		
+		this.rutaActual.setDistancia(this.rutaActual.getTrayectoria().size()-1);
 		dist=this.rutaActual.getTrayectoria().size()-dist;
 		this.rutaActual.getListaPaquetes().add(new Paquete(0,null,dist,this.rutaActual.getTrayectoria().size()-1));
 		
