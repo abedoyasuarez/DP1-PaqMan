@@ -46,35 +46,35 @@ public class Simulacion {
 	public static int indiceIncidenciaInicial;
 	public static int indicePedidoConIncidenciaInicial;
 
-	public  int inicializarSimulacion(int tiempoAct, int intervaloTiempo, double margenSeguridad,Nodo almacen,
-									  int cantidadAutos,int cantidadMotos, int vAutos,int vMotos,
-									  int capacidadAutos, int capacidadMotos, double costoKmAutos, double costoKmMotos, double costoHEMoto, double costoHECarro){
+	public  int inicializarSimulacion(int PtiempoAct, int PintervaloTiempo, double PmargenSeguridad,Nodo Palmacen,
+									  int PcantidadAutos,int PcantidadMotos, int PvAutos,int PvMotos,
+									  int PcapacidadAutos, int PcapacidadMotos, double PcostoKmAutos, double PcostoKmMotos, double PcostoHEMoto, double PcostoHECarro){
 		
-		tiempoActual=tiempoAct;
+		tiempoActual=PtiempoAct;
 		minutoAcumulado=0;
-		this.costo=0;
-		this.intervaloTiempo=intervaloTiempo;
-		this.margenSeguridad=margenSeguridad;
-		this.almacen=almacen;
-		this.listaPedidosConIncidencia=new ArrayList<Pedido>();
-		this.listaPedidos=new ArrayList<Pedido>();
-		this.listaIncidencias=new ArrayList<Incidencia>();
-		this.indicePedidoInicial=0;
-		this.indicePedidoFinal=-1;
-		this.indiceIncidenciaInicial=0;
-		this.indicePedidoConIncidenciaInicial=0;
-		this.cantidadAutos=cantidadAutos;
-		this.cantidadMotos=cantidadMotos;
-		this.velocidadAutos=vAutos;
-		this.velocidadMotos=vMotos;
-		this.capacidadAutos=capacidadAutos;
-		this.capacidadMotos=capacidadMotos;
-		this.costoKmAutos=costoKmAutos;
-		this.costoKmMotos=costoKmMotos;
-		this.costoHEMoto=costoHEMoto;
-		this.costoHECarro=costoHECarro;
-		this.idRutas=0;
-		this.idPedidos=0;
+		costo=0;
+		intervaloTiempo=PintervaloTiempo;
+		margenSeguridad=PmargenSeguridad;
+		almacen=Palmacen;
+		listaPedidosConIncidencia=new ArrayList<Pedido>();
+		listaPedidos=new ArrayList<Pedido>();
+		listaIncidencias=new ArrayList<Incidencia>();
+		indicePedidoInicial=0;
+		indicePedidoFinal=-1;
+		indiceIncidenciaInicial=0;
+		indicePedidoConIncidenciaInicial=0;
+		cantidadAutos=PcantidadAutos;
+		cantidadMotos=PcantidadMotos;
+		velocidadAutos=PvAutos;
+		velocidadMotos=PvMotos;
+		capacidadAutos=PcapacidadAutos;
+		capacidadMotos=PcapacidadMotos;
+		costoKmAutos=PcostoKmAutos;
+		costoKmMotos=PcostoKmMotos;
+		costoHEMoto=PcostoHEMoto;
+		costoHECarro=PcostoHECarro;
+		idRutas=0;
+		idPedidos=0;
 		
 		return 1;
 	}
