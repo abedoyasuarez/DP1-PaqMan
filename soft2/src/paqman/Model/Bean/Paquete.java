@@ -8,6 +8,7 @@ public class Paquete {
 	private int cantidad; //Cantidad de paquetes a dejar en un punto de entrega
 	private int puntoEntrega;//Indice en la trayectoria
 	private int distancia;
+	private int minutoEntrega;
 	
 	
 	public Paquete(int cantPaquetes,Pedido pedido,int distancia,int puntoEntrega){
@@ -58,6 +59,16 @@ public class Paquete {
 
 	public void setDistancia(int distancia) {
 		this.distancia = distancia;
+	}
+
+
+	public int getMinutoEntrega() {
+		return minutoEntrega;
+	}
+
+
+	public void setMinutoEntrega(int minutoEntrega) {
+		this.minutoEntrega = minutoEntrega;
 	}	
 	
 	

@@ -38,6 +38,19 @@ public class Respuesta {
 		
 		return 1;
 	}
+	
+	public int descanzarVehiculos(){
+		
+		
+		for(Vehiculo moto:this.listaMotos){
+			moto.setEstado(2);
+		}
+		for(Vehiculo auto:this.listaAutos){
+			auto.setEstado(2);
+		}
+		return 1;
+	}
+	
 	public int modificarRespuesta(){
 		int flag=0;
 		flag+=modificarListaVehiculo(this.listaMotos);
@@ -52,6 +65,8 @@ public class Respuesta {
 		for(i=0;i<listaVehiculos.size();i++){
 			
 			Vehiculo vehiculo=listaVehiculos.get(i);
+			if (vehiculo.getEstado()==0 && vehiculo.getTiempoTrabajo()+vehiculo.getTiempoReparacion()+vehiculo.getTiempoDescanzo()>=8*60)
+				vehiculo.setTurno((vehiculo.getTurno()+1)%3);
 	        if (vehiculo.getRutaActual().getTrayectoria().size()==1 || vehiculo.getEstado()==0)continue;
 	        if (sufreIncidencia(vehiculo)){destruirRutavehiculo(vehiculo);continue;}
 	        
@@ -75,15 +90,21 @@ public class Respuesta {
 	        int distanciaAcumulada=0;
 	        double distanciaRecorrer=vehiculo.getSaltoDistancia();
 	        distanciaRecorrer+=vehiculo.getDistanciaRecorrida()-(int)vehiculo.getDistanciaRecorrida();
-	        while(posicionRelativa<vehiculo.getRutaActual().getListaPaquetes().size()&&(
-	        		vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa+1).getPuntoEntrega() -
-	        		vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa).getPuntoEntrega())<=distanciaRecorrer){
+	        while(posicionRelativa+1<vehiculo.getRutaActual().getListaPaquetes().size()&&(
+	        		vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa+1).getPuntoEntrega() -vehiculo.getPosicionRuta()
+	        		/*vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa).getPuntoEntrega()*/)<=distanciaRecorrer){
 	        	
 	        	vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa+1).setEstado(2);
-	        	vehiculo.setCantidadPaquetes(vehiculo.getCantidadPaquetes()-vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa).getCantidad());
-	        	distanciaAcumulada+=vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa+1).getPuntoEntrega()-
-	        			vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa).getPuntoEntrega();
-	        	distanciaRecorrer-=distanciaAcumulada;
+	        	vehiculo.setCantidadPaquetes(vehiculo.getCantidadPaquetes()-vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa+1).getCantidad());
+	        	int distancia=vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa+1).getPuntoEntrega()-
+	        			vehiculo.getPosicionRuta();
+	        	vehiculo.setPosicionRuta(vehiculo.getPosicionRuta()+distancia);
+	        	distanciaAcumulada+=distancia;
+	        	distanciaRecorrer-=distancia;
+	        	Paquete paq=vehiculo.getRutaActual().getListaPaquetes().get(posicionRelativa+1);
+	        	if (paq.getPedido()!=null  && paq.getMinutoEntrega()>paq.getPedido().getMinutoLlegada()+paq.getPedido().getTiempoEntrega()){
+	        		Simulacion.costo+=(paq.getMinutoEntrega()-paq.getPedido().getMinutoLlegada()+paq.getPedido().getTiempoEntrega())*(Simulacion.costoHoraRetrasada/60.0);
+	        	}	        			
 	        	posicionRelativa++;
 	        	
 	        	flag=1;
@@ -106,7 +127,7 @@ public class Respuesta {
 	        	
 	        	if (vehiculo.getTipo()==0){//motos
 	        		int id=vehiculo.getId();
-	        		vehiculo=this.futuraListaMotos.get(id);
+	        		this.listaMotos.set(i, this.futuraListaMotos.get(id));
 	        		Vehiculo nuevaMoto=new Vehiculo();
 	        		nuevaMoto.inicializarVehiculo(0,id);
 	        		this.futuraListaMotos.set(id,nuevaMoto);
@@ -116,9 +137,10 @@ public class Respuesta {
 	        	}
 	        	else {//autos
 	        		int id=vehiculo.getId()-Simulacion.cantidadMotos;
-	        		vehiculo=this.futuraListaAutos.get(id);
+	        		//vehiculo=this.futuraListaAutos.get(id);
+	        		this.listaAutos.set(i, this.futuraListaAutos.get(id));
 	        		Vehiculo nuevoCarro=new Vehiculo();
-	        		nuevoCarro.inicializarVehiculo(1,id);
+	        		nuevoCarro.inicializarVehiculo(1,vehiculo.getId());
 	        		this.futuraListaAutos.set(id,nuevoCarro);
 	        		
 	        		/*vehiculo.setRutaActual(this.futuraListaAutos.get(id).getRutaActual());
@@ -143,9 +165,15 @@ public class Respuesta {
 	        	vehiculo.setTiempoDescanzo(0);
 	        	vehiculo.setTiempoTrabajo(0);
 	        	vehiculo.getRutaActual().setDistancia(0);
-	        	vehiculo.getRutaActual().setLlegadaAlmacen(Simulacion.getFechaActual(false));  */ 	
+	        	vehiculo.getRutaActual().setLlegadaAlmacen(Simulacion.getFechaActual(false));  */
+	        	vehiculo.setTiempoTrabajo(vehiculo.getTiempoTrabajo()+Simulacion.intervaloTiempo);
+		        listaVehiculos.get(i).setTiempoTrabajo(vehiculo.getTiempoTrabajo());
+		        listaVehiculos.get(i).setTiempoTrabajo(vehiculo.getTiempoDescanzo());
+		        listaVehiculos.get(i).setTiempoTrabajo(vehiculo.getTiempoReparacion());
+		        
 	        }
-	        vehiculo.setTiempoTrabajo(vehiculo.getTiempoTrabajo()+Simulacion.intervaloTiempo);
+	        
+	        
 	        double costoHE=(vehiculo.getTiempoTrabajo()>480)?(Simulacion.intervaloTiempo*vehiculo.getCostoHE()/60.0):0;
 	        Simulacion.costo+=distanciaAcumulada*vehiculo.getCostoPorKm()+costoHE;
 		}
@@ -280,11 +308,18 @@ public class Respuesta {
 						break;
 				}
 			}
-			for(Vehiculo auto:this.listaMotos){
+			for(Vehiculo auto:this.listaAutos){
 				if (atendido) break;
 				if (auto.getEstado()==2 || auto.getEstado()==3)continue;
 				if (auto.getEstado()==0)auto.EquiparPaquetes(pedido);
-				else if (auto.getEstado()==1) this.futuraListaAutos.get(auto.getId()-this.futuraListaMotos.size()).EquiparPaquetes(pedido);
+				else if (auto.getEstado()==1){
+					//try{
+					this.futuraListaAutos.get(auto.getId()-this.futuraListaMotos.size()).EquiparPaquetes(pedido);
+					/*}
+					catch (Exception e){
+						System.out.println(e);
+					}*/
+				}	
 				if (pedido.getCantidadPaquetes()==0){
 					swapPedidos(pedido,Simulacion.listaPedidos.get(Simulacion.indicePedidoInicial++));
 					atendido=true;
@@ -308,6 +343,10 @@ public class Respuesta {
 				System.out.print(nodo.coorAbs+" ");
 			}			
 			System.out.print("Estado: "+auto.getEstado());
+			System.out.print(" PosicionAbsoluta: "+auto.getPosicionRuta());
+			System.out.print(" PosicionRelativa: "+auto.getPosicionRelativa());
+			System.out.print(" Paquetes: "+auto.getCantidadPaquetes());
+			if (auto.getEstado()==1) System.out.print(" Posicion X Y: "+auto.getRutaActual().getTrayectoria().get(auto.getPosicionRuta()).coorX+" : "+ auto.getRutaActual().getTrayectoria().get(auto.getPosicionRuta()).coorX);
 			System.out.println();
 		}
 		for(Vehiculo moto:this.listaMotos){
@@ -317,6 +356,11 @@ public class Respuesta {
 				System.out.print(nodo.coorAbs+" ");
 			}
 			System.out.print("Estado: "+moto.getEstado());
+			System.out.print(" PosicionAbsoluta: "+moto.getPosicionRuta());
+			System.out.print(" PosicionRelativa: "+moto.getPosicionRelativa());
+			System.out.print(" Paquetes: "+moto.getCantidadPaquetes());
+			if (moto.getEstado()==1) System.out.print(" Posicion X Y: "+moto.getRutaActual().getTrayectoria().get(moto.getPosicionRuta()).coorX+" : "+ moto.getRutaActual().getTrayectoria().get(moto.getPosicionRuta()).coorY);
+			
 			System.out.println();			
 		}
 		return 0;

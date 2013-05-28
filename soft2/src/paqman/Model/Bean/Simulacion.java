@@ -45,6 +45,7 @@ public class Simulacion {
 	public static int idPedidos;
 	public static int indiceIncidenciaInicial;
 	public static int indicePedidoConIncidenciaInicial;
+	public static int costoHoraRetrasada;
 
 	public  int inicializarSimulacion(int PtiempoAct, int PintervaloTiempo, double PmargenSeguridad,Nodo Palmacen,
 									  int PcantidadAutos,int PcantidadMotos, int PvAutos,int PvMotos,
@@ -75,6 +76,7 @@ public class Simulacion {
 		costoHECarro=PcostoHECarro;
 		idRutas=0;
 		idPedidos=0;
+		costoHoraRetrasada=20;
 		
 		return 1;
 	}
@@ -100,7 +102,7 @@ public class Simulacion {
 		Path readFile=myDir.resolve("C:\\Users\\Diego\\Documents\\GitHub\\DP1-PaqMan\\soft2\\src\\paqman\\Model\\Bean\\ArchivoIncidencias1.txt");
 		try{
 			String thisLine;
-			BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Diego\\Documents\\GitHub\\DP1-PaqMan\\soft2\\src\\paqman\\Model\\Bean\\ArchivoIncidencias1.txt"));
+			BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Cliops\\git\\DP1-PaqMan\\soft2\\src\\paqman\\Model\\Bean\\ArchivoIncidencias1.txt"));
 		    while ((thisLine = br.readLine()) != null) {
 		    	System.out.println(thisLine);
 		    	String[] splitDatosIncidencia=thisLine.split(" ");
@@ -125,11 +127,11 @@ public class Simulacion {
 
 		try{
 			String thisLine=null;
-			BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Diego\\Documents\\GitHub\\DP1-PaqMan\\soft2\\src\\paqman\\Model\\Bean\\ArchivoPedidos2.txt"));
+			BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Cliops\\git\\DP1-PaqMan\\soft2\\src\\paqman\\Model\\Bean\\ArchivoPedidos2.txt"));
 			//int id=0;
 		    while ((thisLine = br.readLine()) != null) {
 		    	System.out.println(thisLine);
-		    	String[] splitDatosPedido=thisLine.split(" ");
+		    	String[] splitDatosPedido=thisLine.split(",");
 		    	String[] splitFecha=splitDatosPedido[0].split(":");
 		    	//Date fechaLlegada=new Date();
 		    	//fechaLlegada.setHours(Integer.parseInt(splitFecha[0]));
@@ -152,25 +154,29 @@ public class Simulacion {
 	}	
 	
 	public  int ejecutarSimulacion(){
-		new Mapa().crearMapa(10, 10);
-		this.inicializarSimulacion(/*tiempoActual*/0,/*intervaloTiempo*/ 2,/*margenSeguridad*/ 5,/*almacen*/ new Nodo (5,5),/*cantAutos*/ 20, /*cantMotos*/40,
+		new Mapa().crearMapa(101, 151);
+		this.inicializarSimulacion(/*tiempoActual*/0,/*intervaloTiempo*/ 2,/*margenSeguridad*/ 5,/*almacen*/ new Nodo (45,30),/*cantAutos*/ 20, /*cantMotos*/40,
 								   /*vAutos*/30,/*vMotos*/ 60, /*capacidadAutos*/25, /*capacidadMotos*/4, /*costoKmAutos*/5, /*costoKmMotos*/3, /*costoHEMoto*/8.0,/*costoHECarro*/12.0);
 		cargarPedidos();
 		//cargarIncidencia();
-		Mapa.imrimeMapa();
+		//Mapa.imrimeMapa();
 		patriarca=BFS(almacen,new Nodo(2000000,2000000));
 		Respuesta respuesta=new Respuesta();
 		respuesta.inicializarRespuesta();
 		while(respuesta.planificarRespuesta()==1){
 			minutoAcumulado+=intervaloTiempo;
+			if (minutoAcumulado%(24*60)==4*60 ||minutoAcumulado%(24*60)==12*60 || minutoAcumulado%(24*60)==20*60)respuesta.descanzarVehiculos();
 			respuesta.modificarRespuesta();
-			respuesta.imprimirRespuesta();
-			System.out.println("El costo acumulado: " + Simulacion.costo);
+			
+			
+			//respuesta.imprimirRespuesta();
+			//System.out.println("El costo acumulado: " + Simulacion.costo);
 			
 		}
 		System.out.println("El costo Total: " + Simulacion.costo);
 		return 1;
 	}
+	
 	
 	public static boolean enIntervalo(Pedido pedido){
 		Date fechaActual=getFechaActual(false);

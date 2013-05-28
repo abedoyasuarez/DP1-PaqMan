@@ -24,6 +24,7 @@ public class Vehiculo {
 	private Ruta rutaActual;
 	private double costoPorKm;
 	
+	
 	//private List<Ruta> listaRutas; no se necesita historico
 	
 	public void inicializarVehiculo(int tipo,int codigo){
@@ -197,8 +198,11 @@ public class Vehiculo {
 					estado=1;
 					estadoAnterior=1;
 					this.rutaActual.setMinutoSalidaAlmacen(Simulacion.minutoAcumulado+Simulacion.intervaloTiempo);//+intervalo tiempo
+					int pTiempoAcumulado=Simulacion.minutoAcumulado;
 					for(Paquete paquete:this.rutaActual.getListaPaquetes()){
 						paquete.setEstado(1);
+						paquete.setMinutoEntrega(pTiempoAcumulado+paquete.getDistancia()*60/this.velocidad);
+						pTiempoAcumulado+=pTiempoAcumulado+paquete.getDistancia()*60/this.velocidad;
 					}
 					regresarAlmacen();
 					this.rutaActual.setMinutoLlegadaAlmacen(Simulacion.minutoAcumulado+(this.rutaActual.getDistancia()*60/this.velocidad));
