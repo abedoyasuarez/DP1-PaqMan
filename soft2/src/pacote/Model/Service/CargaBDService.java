@@ -8,7 +8,7 @@ public class CargaBDService {
 	private static DAO_CargaBD dao_cargabd = new DAO_CargaBD();
 	private static Conexion conexion= new Conexion();
 	
-	public void buscaDataSimulacionDia(){
+	public void CargaBD/*buscaDataSimulacionDia*/(){
 		
 		try{
 			conexion.abrirConexion();

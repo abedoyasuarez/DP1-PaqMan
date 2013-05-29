@@ -165,6 +165,24 @@ public class SimulacionController {
 		return 0;
 	}
      // FIN DIA A DIA
+	
+	//CARGA PEDIDOS
+	@RequestMapping(value = "/Simulacion/CargaPedidos", method = RequestMethod.POST)
+	public @ResponseBody int iniciaCargaPedidos() throws Exception{
+		try{
+			CargaBDService cargaService = new CargaBDService();
+			System.out.println("CARGA DE ARCHIVOS");
+			cargaService.CargaBD();
+			System.out.println("FIN DE CARGA DE ARCHIVOS");
+		} catch (Exception e){
+	    	e.printStackTrace();
+	    	System.out.println("CATCH - ERROR EN LA CARGA DE ARCHIVOS. >:(");
+		}
+		return 0;
+		
+	}
+	//FIN CARGA PEDIDOS
+	
      @RequestMapping(value = "/Simulacion/hardcode2", method = RequestMethod.POST)
      public @ResponseBody RetornoSimulacion SilumacionPacote(@RequestBody Simul s) throws Exception {
     	 
